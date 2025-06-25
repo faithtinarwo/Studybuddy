@@ -1,5 +1,5 @@
-import { useState, useRef } from "react";
-import { Link } from "react-router-dom";
+import { useState, useRef, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -29,6 +29,8 @@ import {
   Trophy,
   Target,
 } from "lucide-react";
+import { apiClient, detectSubject } from "@/lib/api";
+import { toast } from "@/hooks/use-toast";
 
 interface Message {
   id: string;
@@ -50,190 +52,30 @@ const HomeworkHelper = () => {
   ]);
   const [inputMessage, setInputMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
-  const [credits, setCredits] = useState(5);
+  const [uploadedImage, setUploadedImage] = useState<File | null>(null);
+  const [uploadedImagePreview, setUploadedImagePreview] = useState<
+    string | null
+  >(null);
+  const [credits, setCredits] = useState(0);
+  const [user, setUser] = useState<any>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate();
 
-  // Real AI integration function
-  const callOpenAI = async (userMessage: string, imageData?: string) => {
+  // Load user data on component mount
+  useEffect(() => {
+    loadUserData();
+  }, []);
+
+  const loadUserData = async () => {
     try {
-      // For demo purposes, we'll simulate the API call
-      // In production, you'd call your backend which then calls OpenAI
-      const systemPrompt = `You are StudyBuddy, a friendly AI homework assistant designed specifically for children and their parents. Your responses should be:
-
-1. Kid-friendly and encouraging
-2. Educational but fun
-3. Step-by-step explanations
-4. Use emojis to make it engaging
-5. Explain concepts in simple terms parents can understand
-6. Focus on helping children learn, not just providing answers
-7. Be supportive and positive
-
-If an image is provided, analyze the homework question in the image and provide a detailed explanation.
-
-Always structure your response with:
-- A friendly greeting acknowledging the question
-- Step-by-step breakdown
-- Tips for parents to help their child understand
-- Encouragement for the student`;
-
-      // This is where you'd make the actual API call to OpenAI
-      // For now, we'll use a more sophisticated mock response
-      return generateSmartResponse(userMessage, imageData);
+      const userData = await apiClient.getCurrentUser();
+      setUser(userData);
+      setCredits(userData.credits);
     } catch (error) {
-      console.error("Error calling OpenAI:", error);
-      return "🤖 Oops! I'm having a little trouble right now. Please try again in a moment! 💝";
+      console.error("Failed to load user data:", error);
+      // Redirect to login if user is not authenticated
+      navigate("/");
     }
-  };
-
-  // Enhanced mock response generator for demo
-  const generateSmartResponse = (userMessage: string, imageData?: string) => {
-    const mathKeywords = [
-      "math",
-      "add",
-      "subtract",
-      "multiply",
-      "divide",
-      "fraction",
-      "equation",
-      "solve",
-      "calculate",
-    ];
-    const scienceKeywords = [
-      "science",
-      "experiment",
-      "biology",
-      "chemistry",
-      "physics",
-      "plant",
-      "animal",
-    ];
-    const englishKeywords = [
-      "english",
-      "grammar",
-      "write",
-      "essay",
-      "sentence",
-      "paragraph",
-      "spelling",
-    ];
-
-    const isMath = mathKeywords.some((keyword) =>
-      userMessage.toLowerCase().includes(keyword),
-    );
-    const isScience = scienceKeywords.some((keyword) =>
-      userMessage.toLowerCase().includes(keyword),
-    );
-    const isEnglish = englishKeywords.some((keyword) =>
-      userMessage.toLowerCase().includes(keyword),
-    );
-
-    if (imageData) {
-      return `🔍 I can see your homework photo! Let me help you solve this step by step:
-
-📝 **Problem Analysis:**
-From your image, I can see this is a ${isMath ? "math" : isScience ? "science" : "homework"} question that needs some careful thinking!
-
-🎯 **Step-by-Step Solution:**
-
-1️⃣ **First Step**: Let's identify what we know
-   - Look for the key information in the problem
-   - Circle or underline the important numbers/words
-
-2️⃣ **Second Step**: Plan our approach
-   - What operation or concept do we need to use?
-   - What's the question actually asking for?
-
-3️⃣ **Third Step**: Solve it together!
-   - Work through the problem step by step
-   - Check our work to make sure it makes sense
-
-👨‍👩‍👧‍👦 **Parent Tip**: Encourage your child to explain each step back to you - this helps them really understand the concept!
-
-🌟 **Remember**: It's okay to make mistakes - that's how we learn and grow! You're doing great! 
-
-Need me to explain any part in more detail? I'm here to help! 💪✨`;
-    }
-
-    if (isMath) {
-      return `🔢 Great math question! Let's solve this together! 
-
-🎯 **Understanding the Problem:**
-Math can be like solving a fun puzzle! Let's break it down step by step.
-
-📊 **Step-by-Step Solution:**
-
-1️⃣ **Read Carefully**: First, let's read the problem twice to understand what it's asking
-2️⃣ **Find the Numbers**: What numbers do we have to work with?
-3️⃣ **Choose the Operation**: Do we need to add ➕, subtract ➖, multiply ✖️, or divide ➗?
-4️⃣ **Solve**: Let's work through it together!
-5️⃣ **Check**: Does our answer make sense?
-
-👨‍👩‍👧‍👦 **Parent Tip**: Help your child draw pictures or use objects to visualize the problem - this makes math much easier to understand!
-
-🌟 Remember: Every math expert started as a beginner. You're building your math superpowers! 💪
-
-What specific part would you like me to explain more? I'm here to help make math fun! 🚀`;
-    }
-
-    if (isScience) {
-      return `🔬 Awesome science question! Science is all about discovering how our amazing world works!
-
-🌟 **Let's Explore Together:**
-
-🔍 **Observation**: What do we notice or see in this problem?
-🤔 **Question**: What are we trying to understand or find out?
-🧪 **Investigation**: How can we find the answer?
-💡 **Explanation**: Let's understand why this happens!
-
-🌱 **Fun Fact**: Science is everywhere around us! From the plants in your garden to the stars in the sky!
-
-👨‍👩‍👧‍👦 **Parent Tip**: Encourage your child to ask "Why?" and "How?" - these are the most important questions in science!
-
-🎯 **Remember**: Scientists make discoveries by being curious and asking questions - just like you're doing right now!
-
-What part of science would you like to explore deeper? Let's go on a learning adventure! 🚀🌟`;
-    }
-
-    if (isEnglish) {
-      return `📚 Fantastic English question! Language is like magic - it helps us share our thoughts and stories!
-
-✍️ **Let's Write and Learn Together:**
-
-📖 **Reading**: Let's understand what we're working with
-💭 **Thinking**: What's the main idea or message?
-✏️ **Writing**: How can we express our thoughts clearly?
-🔍 **Checking**: Let's make sure everything flows nicely!
-
-🌈 **Writing Tips:**
-- Start with your main idea
-- Use descriptive words to paint a picture
-- Read it out loud to see how it sounds
-- Don't worry about perfect - just start writing!
-
-👨‍👩‍👧‍👦 **Parent Tip**: Reading together every day helps build strong language skills. Make it fun with different voices for characters!
-
-🌟 **Remember**: Every great writer started with a single word. You're building your storytelling superpowers! ✨
-
-What part of English would you like to work on? Let's create something amazing together! 🎨📝`;
-    }
-
-    return `🌟 What a great question! I love helping curious minds like yours!
-
-💡 **Let's Figure This Out Together:**
-
-🎯 **Step 1**: Let's understand exactly what you're asking
-🔍 **Step 2**: Break down the problem into smaller pieces  
-💪 **Step 3**: Work through each piece together
-✨ **Step 4**: Put it all together for the final answer!
-
-👨‍👩‍👧‍👦 **Parent Tip**: Learning happens best when we're patient and encouraging. Celebrate every small step forward!
-
-🚀 **Fun Learning Fact**: Your brain grows stronger every time you learn something new - you're literally becoming smarter right now!
-
-What subject is this question about? I can give you more specific help once I know if it's math, science, English, or something else! 
-
-Keep up the amazing work! 🌟💝`;
   };
 
   const handleSendMessage = async () => {
@@ -244,39 +86,80 @@ Keep up the amazing work! 🌟💝`;
       type: "user",
       content: inputMessage || "I uploaded an image with my homework question.",
       timestamp: new Date(),
-      image: uploadedImage || undefined,
+      image: uploadedImagePreview || undefined,
     };
 
     setMessages((prev) => [...prev, userMessage]);
+    const currentMessage = inputMessage;
+    const currentImage = uploadedImage;
     setInputMessage("");
     setUploadedImage(null);
+    setUploadedImagePreview(null);
     setIsLoading(true);
 
     try {
-      // Call the AI service
-      const aiResponse = await callOpenAI(
-        inputMessage,
-        uploadedImage || undefined,
-      );
+      let response;
+
+      if (currentImage) {
+        // Send image to backend
+        response = await apiClient.sendImage(currentImage, currentMessage);
+      } else {
+        // Send text message to backend
+        const subject = detectSubject(currentMessage);
+        response = await apiClient.sendMessage({
+          message: currentMessage,
+          subject,
+        });
+      }
 
       const aiMessage: Message = {
         id: (Date.now() + 1).toString(),
         type: "ai",
-        content: aiResponse,
+        content: response.message,
         timestamp: new Date(),
       };
 
       setMessages((prev) => [...prev, aiMessage]);
-      setCredits((prev) => Math.max(0, prev - 1));
-    } catch (error) {
-      const errorMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        type: "ai",
-        content:
-          "🤖 Oops! I'm having a little trouble right now. Please try again in a moment! 💝",
-        timestamp: new Date(),
-      };
-      setMessages((prev) => [...prev, errorMessage]);
+      setCredits(response.credits_remaining);
+
+      // Show success toast
+      toast({
+        title: "✨ StudyBuddy responded!",
+        description: `${response.credits_remaining} credits remaining`,
+      });
+    } catch (error: any) {
+      console.error("Failed to send message:", error);
+
+      // Handle specific error cases
+      if (error.message.includes("402")) {
+        toast({
+          title: "😔 No credits remaining",
+          description: "Please purchase more credits to continue learning!",
+          variant: "destructive",
+        });
+      } else if (error.message.includes("401")) {
+        toast({
+          title: "🔐 Authentication required",
+          description: "Please log in to continue using StudyBuddy",
+          variant: "destructive",
+        });
+        navigate("/");
+      } else {
+        const errorMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          type: "ai",
+          content:
+            "🤖 Oops! I'm having a little trouble right now. Please try again in a moment! 💝",
+          timestamp: new Date(),
+        };
+        setMessages((prev) => [...prev, errorMessage]);
+
+        toast({
+          title: "😔 Something went wrong",
+          description: "Please try again in a moment!",
+          variant: "destructive",
+        });
+      }
     } finally {
       setIsLoading(false);
     }
@@ -285,9 +168,12 @@ Keep up the amazing work! 🌟💝`;
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
+      setUploadedImage(file);
+
+      // Create preview URL
       const reader = new FileReader();
       reader.onload = (e) => {
-        setUploadedImage(e.target?.result as string);
+        setUploadedImagePreview(e.target?.result as string);
       };
       reader.readAsDataURL(file);
     }
@@ -296,6 +182,35 @@ Keep up the amazing work! 🌟💝`;
   const formatTime = (date: Date) => {
     return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
   };
+
+  const handlePurchaseCredits = async (amount: number) => {
+    try {
+      const response = await apiClient.purchaseCredits(amount);
+      setCredits(response.new_balance);
+      toast({
+        title: "🎉 Credits purchased!",
+        description: `Successfully added ${amount} credits to your account!`,
+      });
+    } catch (error) {
+      console.error("Failed to purchase credits:", error);
+      toast({
+        title: "😔 Purchase failed",
+        description: "Unable to purchase credits. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  if (!user) {
+    return (
+      <div className="min-h-screen kids-gradient-bg flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin h-12 w-12 border-4 border-kids-purple border-t-transparent rounded-full mx-auto mb-4"></div>
+          <p className="text-gray-600 font-medium">Loading StudyBuddy...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen kids-gradient-bg">
@@ -334,6 +249,7 @@ Keep up the amazing work! 🌟💝`;
               <Button
                 variant="outline"
                 className="hidden sm:flex bright-button"
+                onClick={() => handlePurchaseCredits(10)}
               >
                 <CreditCard className="w-4 h-4 mr-2" />
                 Buy Credits
@@ -437,12 +353,25 @@ Keep up the amazing work! 🌟💝`;
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-kids-orange font-medium mb-3">
-                    🎯 You're running low on learning power! Get our Family Fun
-                    Pack for unlimited homework adventures!
+                    🎯 You're running low on learning power! Get more credits
+                    for unlimited homework adventures!
                   </p>
-                  <Button size="sm" className="w-full bright-button font-bold">
-                    🚀 Upgrade Now!
-                  </Button>
+                  <div className="space-y-2">
+                    <Button
+                      size="sm"
+                      className="w-full bright-button font-bold"
+                      onClick={() => handlePurchaseCredits(10)}
+                    >
+                      🚀 Get 10 Credits (R 10)
+                    </Button>
+                    <Button
+                      size="sm"
+                      className="w-full purple-button font-bold"
+                      onClick={() => handlePurchaseCredits(50)}
+                    >
+                      💎 Get 50 Credits (R 40)
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             )}
@@ -554,10 +483,10 @@ Keep up the amazing work! 🌟💝`;
 
               {/* Input Area */}
               <div className="border-t border-kids-yellow/30 p-4 bg-gradient-to-r from-kids-yellow/5 to-kids-purple/5">
-                {uploadedImage && (
+                {uploadedImagePreview && (
                   <div className="mb-4 relative inline-block">
                     <img
-                      src={uploadedImage}
+                      src={uploadedImagePreview}
                       alt="Upload preview"
                       className="max-w-xs rounded-xl border-2 border-kids-yellow shadow-lg"
                     />
@@ -565,7 +494,10 @@ Keep up the amazing work! 🌟💝`;
                       size="icon"
                       variant="destructive"
                       className="absolute -top-2 -right-2 w-8 h-8 rounded-full shadow-lg bg-kids-orange hover:bg-red-500"
-                      onClick={() => setUploadedImage(null)}
+                      onClick={() => {
+                        setUploadedImage(null);
+                        setUploadedImagePreview(null);
+                      }}
                     >
                       ×
                     </Button>
@@ -627,6 +559,7 @@ Keep up the amazing work! 🌟💝`;
                       <Button
                         variant="link"
                         className="p-0 h-auto text-kids-orange underline font-bold"
+                        onClick={() => handlePurchaseCredits(10)}
                       >
                         Get more credits to continue the fun!
                       </Button>
