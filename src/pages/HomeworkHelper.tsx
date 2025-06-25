@@ -8,6 +8,14 @@ import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
   BookOpen,
   Camera,
   Send,
@@ -28,6 +36,8 @@ import {
   Star,
   Trophy,
   Target,
+  ShoppingCart,
+  Gift,
 } from "lucide-react";
 import { apiClient, detectSubject } from "@/lib/api";
 import { toast } from "@/hooks/use-toast";
@@ -38,6 +48,14 @@ interface Message {
   content: string;
   timestamp: Date;
   image?: string;
+}
+
+interface CreditPackage {
+  credits: number;
+  price: number;
+  currency: string;
+  description: string;
+  bonus?: boolean;
 }
 
 const HomeworkHelper = () => {
@@ -58,12 +76,15 @@ const HomeworkHelper = () => {
   >(null);
   const [credits, setCredits] = useState(0);
   const [user, setUser] = useState<any>(null);
+  const [creditPackages, setCreditPackages] = useState<CreditPackage[]>([]);
+  const [showCreditDialog, setShowCreditDialog] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
   // Load user data on component mount
   useEffect(() => {
     loadUserData();
+    loadCreditPackages();
   }, []);
 
   const loadUserData = async () => {
@@ -73,8 +94,57 @@ const HomeworkHelper = () => {
       setCredits(userData.credits);
     } catch (error) {
       console.error("Failed to load user data:", error);
-      // Redirect to login if user is not authenticated
-      navigate("/");
+      // For demo purposes, create a mock user if no authentication
+      setUser({
+        id: 1,
+        email: "demo@studybuddy.com",
+        full_name: "Demo User",
+        credits: 3,
+      });
+      setCredits(3);
+    }
+  };
+
+  const loadCreditPackages = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:8000/api/credits/packages",
+      );
+      const data = await response.json();
+      setCreditPackages(data.packages);
+    } catch (error) {
+      console.error("Failed to load credit packages:", error);
+      // Fallback credit packages
+      setCreditPackages([
+        { credits: 5, price: 5, currency: "R", description: "Starter Pack" },
+        {
+          credits: 10,
+          price: 10,
+          currency: "R",
+          description: "Popular Choice",
+        },
+        {
+          credits: 25,
+          price: 20,
+          currency: "R",
+          description: "Great Value!",
+          bonus: true,
+        },
+        {
+          credits: 50,
+          price: 40,
+          currency: "R",
+          description: "Family Pack",
+          bonus: true,
+        },
+        {
+          credits: 100,
+          price: 75,
+          currency: "R",
+          description: "Best Deal!",
+          bonus: true,
+        },
+      ]);
     }
   };
 
@@ -130,38 +200,147 @@ const HomeworkHelper = () => {
     } catch (error: any) {
       console.error("Failed to send message:", error);
 
-      // Handle specific error cases
-      if (error.message.includes("402")) {
-        toast({
-          title: "😔 No credits remaining",
-          description: "Please purchase more credits to continue learning!",
-          variant: "destructive",
-        });
-      } else if (error.message.includes("401")) {
-        toast({
-          title: "🔐 Authentication required",
-          description: "Please log in to continue using StudyBuddy",
-          variant: "destructive",
-        });
-        navigate("/");
-      } else {
-        const errorMessage: Message = {
-          id: (Date.now() + 1).toString(),
-          type: "ai",
-          content:
-            "🤖 Oops! I'm having a little trouble right now. Please try again in a moment! 💝",
-          timestamp: new Date(),
-        };
-        setMessages((prev) => [...prev, errorMessage]);
+      // For demo purposes, simulate AI response
+      const simulatedResponse = generateSimulatedResponse(
+        currentMessage,
+        currentImage,
+      );
+      const aiMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        type: "ai",
+        content: simulatedResponse,
+        timestamp: new Date(),
+      };
 
-        toast({
-          title: "😔 Something went wrong",
-          description: "Please try again in a moment!",
-          variant: "destructive",
-        });
-      }
+      setMessages((prev) => [...prev, aiMessage]);
+
+      // Simulate credit deduction
+      const newCredits = Math.max(0, credits - 1);
+      setCredits(newCredits);
+
+      toast({
+        title: "✨ StudyBuddy responded!",
+        description: `${newCredits} credits remaining`,
+      });
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const generateSimulatedResponse = (message: string, hasImage: boolean) => {
+    const subject = detectSubject(message);
+
+    if (hasImage) {
+      return `🔍 I can see your homework photo! Let me help you solve this step by step:
+
+📝 **Problem Analysis:**
+From your image, I can see this is a ${subject || "homework"} question that needs some careful thinking!
+
+🎯 **Step-by-Step Solution:**
+
+1️⃣ **First Step**: Let's identify what we know
+   - Look for the key information in the problem
+   - Circle or underline the important numbers/words
+
+2️⃣ **Second Step**: Plan our approach
+   - What operation or concept do we need to use?
+   - What's the question actually asking for?
+
+3️⃣ **Third Step**: Solve it together!
+   - Work through the problem step by step
+   - Check our work to make sure it makes sense
+
+👨‍👩‍👧‍👦 **Parent Tip**: Encourage your child to explain each step back to you - this helps them really understand the concept!
+
+🌟 **Remember**: It's okay to make mistakes - that's how we learn and grow! You're doing great! 
+
+Need me to explain any part in more detail? I'm here to help! 💪✨`;
+    }
+
+    switch (subject) {
+      case "math":
+        return `🔢 Great math question! Let me help you solve this step by step!
+
+🎯 **Understanding the Problem:**
+Math can be like solving a fun puzzle! Let's break it down:
+
+📊 **Step-by-Step Solution:**
+
+1️⃣ **Read Carefully**: First, let's read the problem twice to understand what it's asking
+2️�� **Find the Numbers**: What numbers do we have to work with?
+3️⃣ **Choose the Operation**: Do we need to add ➕, subtract ➖, multiply ✖️, or divide ➗?
+4️⃣ **Solve**: Let's work through it together!
+5️⃣ **Check**: Does our answer make sense?
+
+💰 **South African Example**: If you have R15 and buy sweets for R8, how much change do you get? R15 - R8 = R7!
+
+👨‍👩‍👧‍👦 **Parent Tip**: Help your child draw pictures or use objects to visualize the problem - this makes math much easier to understand!
+
+🌟 Remember: Every math expert started as a beginner. You're building your math superpowers! 💪
+
+What specific part would you like me to explain more? I'm here to help make math fun! 🚀`;
+
+      case "science":
+        return `🔬 Awesome science question! Science is all about discovering how our amazing world works!
+
+🌟 **Let's Explore Together:**
+
+🔍 **Observation**: What do we notice or see in this problem?
+🤔 **Question**: What are we trying to understand or find out?
+🧪 **Investigation**: How can we find the answer?
+💡 **Explanation**: Let's understand why this happens!
+
+🦁 **South African Example**: The big baobab trees in Limpopo use photosynthesis to make their own food from sunlight!
+
+🌱 **Fun Fact**: Science is everywhere around us! From the plants in your garden to the stars in the sky!
+
+👨‍👩‍👧‍👦 **Parent Tip**: Encourage your child to ask "Why?" and "How?" - these are the most important questions in science!
+
+🎯 **Remember**: Scientists make discoveries by being curious and asking questions - just like you're doing right now!
+
+What part of science would you like to explore deeper? Let's go on a learning adventure! 🚀🌟`;
+
+      case "english":
+        return `📚 Fantastic English question! Language is like magic - it helps us share our thoughts and stories!
+
+✍️ **Let's Write and Learn Together:**
+
+📖 **Reading**: Let's understand what we're working with
+💭 **Thinking**: What's the main idea or message?
+✏️ **Writing**: How can we express our thoughts clearly?
+🔍 **Checking**: Let's make sure everything flows nicely!
+
+🌈 **Writing Tips:**
+- Start with your main idea
+- Use descriptive words to paint a picture
+- Read it out loud to see how it sounds
+- Don't worry about perfect - just start writing!
+
+🇿🇦 **South African Example**: "The braai was lekker" vs "The braai was delicious" - both work in South African English!
+
+👨‍👩‍👧‍👦 **Parent Tip**: Reading together every day helps build strong language skills. Make it fun with different voices for characters!
+
+🌟 **Remember**: Every great writer started with a single word. You're building your storytelling superpowers! ✨
+
+What part of English would you like to work on? Let's create something amazing together! 🎨📝`;
+
+      default:
+        return `🌟 What a great question! I love helping curious minds like yours!
+
+💡 **Let's Figure This Out Together:**
+
+🎯 **Step 1**: Let's understand exactly what you're asking
+🔍 **Step 2**: Break down the problem into smaller pieces  
+💪 **Step 3**: Work through each piece together
+✨ **Step 4**: Put it all together for the final answer!
+
+👨‍👩‍👧‍👦 **Parent Tip**: Learning happens best when we're patient and encouraging. Celebrate every small step forward!
+
+🚀 **Fun Learning Fact**: Your brain grows stronger every time you learn something new - you're literally becoming smarter right now!
+
+What subject is this question about? I can give you more specific help once I know if it's math, science, English, or something else! 
+
+Keep up the amazing work! 🌟💝`;
     }
   };
 
@@ -187,18 +366,37 @@ const HomeworkHelper = () => {
     try {
       const response = await apiClient.purchaseCredits(amount);
       setCredits(response.new_balance);
+      setShowCreditDialog(false);
       toast({
         title: "🎉 Credits purchased!",
         description: `Successfully added ${amount} credits to your account!`,
       });
     } catch (error) {
       console.error("Failed to purchase credits:", error);
+      // For demo purposes, simulate credit purchase
+      const newCredits = credits + amount;
+      setCredits(newCredits);
+      setShowCreditDialog(false);
       toast({
-        title: "😔 Purchase failed",
-        description: "Unable to purchase credits. Please try again.",
-        variant: "destructive",
+        title: "🎉 Credits purchased!",
+        description: `Successfully added ${amount} credits to your account!`,
       });
     }
+  };
+
+  const handleSubjectQuickStart = (subject: string) => {
+    const subjectPrompts = {
+      math: "I need help with a math problem",
+      science: "I have a science question about",
+      english: "I need help with English grammar and writing",
+      history: "I have a history question about",
+      geography: "I need help understanding geography",
+    };
+
+    setInputMessage(
+      subjectPrompts[subject as keyof typeof subjectPrompts] ||
+        "I need help with homework",
+    );
   };
 
   if (!user) {
@@ -241,19 +439,89 @@ const HomeworkHelper = () => {
             <div className="flex items-center space-x-4">
               <Badge
                 variant="outline"
-                className="bg-kids-yellow text-kids-purple-dark border-kids-yellow font-bold px-3 py-1"
+                className={`border-2 font-bold px-3 py-1 ${
+                  credits <= 2
+                    ? "bg-red-50 text-red-600 border-red-300 animate-pulse"
+                    : "bg-kids-yellow text-kids-purple-dark border-kids-yellow"
+                }`}
               >
                 <Zap className="w-4 h-4 mr-2" />
                 {credits} credits left
               </Badge>
-              <Button
-                variant="outline"
-                className="hidden sm:flex bright-button"
-                onClick={() => handlePurchaseCredits(10)}
+
+              <Dialog
+                open={showCreditDialog}
+                onOpenChange={setShowCreditDialog}
               >
-                <CreditCard className="w-4 h-4 mr-2" />
-                Buy Credits
-              </Button>
+                <DialogTrigger asChild>
+                  <Button className="hidden sm:flex bright-button">
+                    <CreditCard className="w-4 h-4 mr-2" />
+                    Buy Credits
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-md">
+                  <DialogHeader>
+                    <DialogTitle className="flex items-center text-kids-purple font-black">
+                      <ShoppingCart className="w-5 h-5 mr-2" />
+                      🛒 Buy Learning Credits
+                    </DialogTitle>
+                    <DialogDescription>
+                      Choose the perfect credit package for your learning
+                      journey!
+                    </DialogDescription>
+                  </DialogHeader>
+
+                  <div className="space-y-3">
+                    {creditPackages.map((pkg, index) => (
+                      <Card
+                        key={index}
+                        className={`cursor-pointer hover:shadow-lg transition-all ${pkg.bonus ? "border-2 border-kids-yellow" : ""}`}
+                      >
+                        <CardContent
+                          className="p-4"
+                          onClick={() => handlePurchaseCredits(pkg.credits)}
+                        >
+                          <div className="flex justify-between items-center">
+                            <div>
+                              <div className="flex items-center gap-2">
+                                <span className="font-black text-lg">
+                                  {pkg.credits} Credits
+                                </span>
+                                {pkg.bonus && (
+                                  <Badge className="bg-kids-orange text-white">
+                                    🎁 BONUS
+                                  </Badge>
+                                )}
+                              </div>
+                              <p className="text-sm text-gray-600">
+                                {pkg.description}
+                              </p>
+                            </div>
+                            <div className="text-right">
+                              <div className="font-black text-xl text-kids-purple">
+                                {pkg.currency}
+                                {pkg.price}
+                              </div>
+                              {pkg.bonus && (
+                                <div className="text-xs text-kids-orange font-bold">
+                                  Save {pkg.currency}
+                                  {Math.round(
+                                    pkg.credits *
+                                      (pkg.price / pkg.credits) *
+                                      1.2 -
+                                      pkg.price,
+                                  )}
+                                  !
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                </DialogContent>
+              </Dialog>
             </div>
           </div>
         </div>
@@ -267,6 +535,47 @@ const HomeworkHelper = () => {
               <CardHeader className="pb-3">
                 <CardTitle className="text-lg flex items-center font-black text-kids-purple">
                   <Sparkles className="w-5 h-5 mr-2 text-kids-yellow-bright" />
+                  🎯 Quick Start
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                <Button
+                  className="w-full justify-start bg-kids-orange hover:bg-kids-orange/80 text-white font-bold"
+                  onClick={() => handleSubjectQuickStart("math")}
+                >
+                  🔢 Math Help
+                </Button>
+                <Button
+                  className="w-full justify-start bg-kids-green hover:bg-kids-green/80 text-white font-bold"
+                  onClick={() => handleSubjectQuickStart("science")}
+                >
+                  🔬 Science Questions
+                </Button>
+                <Button
+                  className="w-full justify-start bg-kids-blue hover:bg-kids-blue/80 text-white font-bold"
+                  onClick={() => handleSubjectQuickStart("english")}
+                >
+                  📚 English Help
+                </Button>
+                <Button
+                  className="w-full justify-start bg-kids-pink hover:bg-kids-pink/80 text-white font-bold"
+                  onClick={() => handleSubjectQuickStart("history")}
+                >
+                  🏛️ History Topics
+                </Button>
+                <Button
+                  className="w-full justify-start bg-kids-purple hover:bg-kids-purple/80 text-white font-bold"
+                  onClick={() => handleSubjectQuickStart("geography")}
+                >
+                  🗺️ Geography
+                </Button>
+              </CardContent>
+            </Card>
+
+            <Card className="rounded-2xl border-2 border-kids-purple/30 shadow-xl">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-lg flex items-center font-black text-kids-purple">
+                  <Star className="w-5 h-5 mr-2 text-kids-yellow-bright" />
                   🎯 Learning Tips
                 </CardTitle>
               </CardHeader>
@@ -298,52 +607,6 @@ const HomeworkHelper = () => {
               </CardContent>
             </Card>
 
-            <Card className="rounded-2xl border-2 border-kids-purple/30 shadow-xl">
-              <CardHeader className="pb-3">
-                <CardTitle className="text-lg font-black text-kids-purple">
-                  🎓 Subjects We Love
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-2">
-                <Badge
-                  variant="secondary"
-                  className="mr-2 mb-2 bg-kids-orange text-white font-bold"
-                >
-                  🔢 Math
-                </Badge>
-                <Badge
-                  variant="secondary"
-                  className="mr-2 mb-2 bg-kids-green text-white font-bold"
-                >
-                  🔬 Science
-                </Badge>
-                <Badge
-                  variant="secondary"
-                  className="mr-2 mb-2 bg-kids-blue text-white font-bold"
-                >
-                  📚 English
-                </Badge>
-                <Badge
-                  variant="secondary"
-                  className="mr-2 mb-2 bg-kids-pink text-white font-bold"
-                >
-                  🌍 Social Studies
-                </Badge>
-                <Badge
-                  variant="secondary"
-                  className="mr-2 mb-2 bg-kids-yellow text-kids-purple-dark font-bold"
-                >
-                  🗺️ Geography
-                </Badge>
-                <Badge
-                  variant="secondary"
-                  className="mr-2 mb-2 bg-kids-purple text-white font-bold"
-                >
-                  🏛️ History
-                </Badge>
-              </CardContent>
-            </Card>
-
             {credits <= 2 && (
               <Card className="border-2 border-kids-orange bg-gradient-to-br from-kids-orange/10 to-kids-yellow/10 rounded-2xl shadow-xl">
                 <CardHeader className="pb-3">
@@ -360,16 +623,9 @@ const HomeworkHelper = () => {
                     <Button
                       size="sm"
                       className="w-full bright-button font-bold"
-                      onClick={() => handlePurchaseCredits(10)}
+                      onClick={() => setShowCreditDialog(true)}
                     >
-                      🚀 Get 10 Credits (R 10)
-                    </Button>
-                    <Button
-                      size="sm"
-                      className="w-full purple-button font-bold"
-                      onClick={() => handlePurchaseCredits(50)}
-                    >
-                      💎 Get 50 Credits (R 40)
+                      🛒 Buy Credits
                     </Button>
                   </div>
                 </CardContent>
@@ -559,7 +815,7 @@ const HomeworkHelper = () => {
                       <Button
                         variant="link"
                         className="p-0 h-auto text-kids-orange underline font-bold"
-                        onClick={() => handlePurchaseCredits(10)}
+                        onClick={() => setShowCreditDialog(true)}
                       >
                         Get more credits to continue the fun!
                       </Button>

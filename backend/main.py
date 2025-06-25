@@ -5,16 +5,15 @@ from sqlalchemy.orm import Session
 from typing import Optional, List
 import os
 from dotenv import load_dotenv
-import openai
-from PIL import Image
 import base64
 import io
+from PIL import Image
 
 from database import get_db, init_db
 from models import User, ChatMessage, Credit
 from schemas import UserCreate, UserResponse, ChatRequest, ChatResponse, CreditResponse
 from auth import create_access_token, verify_token, get_password_hash, verify_password
-from ai_service import process_homework_question, analyze_homework_image
+from ai_service import process_homework_question, analyze_homework_image, detect_subject_advanced
 
 load_dotenv()
 
@@ -117,23 +116,35 @@ async def chat_with_ai(
         raise HTTPException(status_code=404, detail="User not found")
     
     if user.credits <= 0:
-        raise HTTPException(status_code=402, detail="No credits remaining")
+        raise HTTPException(status_code=402, detail="No credits remaining. Please purchase more credits to continue learning!")
     
     try:
+        # Auto-detect subject if not provided
+        subject = request.subject
+        if not subject:
+            subject = detect_subject_advanced(request.message)
+        
         # Process with AI
-        ai_response = await process_homework_question(request.message, request.subject)
+        ai_response = await process_homework_question(request.message, subject)
         
         # Save chat message to database
         chat_message = ChatMessage(
             user_id=user.id,
             user_message=request.message,
             ai_response=ai_response,
-            subject=request.subject
+            subject=subject
         )
         db.add(chat_message)
         
-        # Deduct credit
+        # Deduct credit and record transaction
         user.credits -= 1
+        credit_transaction = Credit(
+            user_id=user.id,
+            amount=-1,
+            transaction_type="usage",
+            description=f"Chat question: {request.message[:50]}..."
+        )
+        db.add(credit_transaction)
         db.commit()
         
         return ChatResponse(
@@ -142,6 +153,7 @@ async def chat_with_ai(
         )
     
     except Exception as e:
+        print(f"Chat processing error: {e}")
         raise HTTPException(status_code=500, detail=f"AI processing failed: {str(e)}")
 
 @app.post("/api/chat/image", response_model=ChatResponse)
@@ -159,7 +171,7 @@ async def chat_with_image(
         raise HTTPException(status_code=404, detail="User not found")
     
     if user.credits <= 0:
-        raise HTTPException(status_code=402, detail="No credits remaining")
+        raise HTTPException(status_code=402, detail="No credits remaining. Please purchase more credits to continue learning!")
     
     try:
         # Process image
@@ -177,14 +189,22 @@ async def chat_with_image(
         # Save chat message to database
         chat_message = ChatMessage(
             user_id=user.id,
-            user_message=message or "Image uploaded",
+            user_message=message or "Image uploaded with homework question",
             ai_response=ai_response,
-            has_image=True
+            has_image=True,
+            subject=detect_subject_advanced(message) if message else None
         )
         db.add(chat_message)
         
-        # Deduct credit
+        # Deduct credit and record transaction
         user.credits -= 1
+        credit_transaction = Credit(
+            user_id=user.id,
+            amount=-1,
+            transaction_type="usage",
+            description="Image analysis question"
+        )
+        db.add(credit_transaction)
         db.commit()
         
         return ChatResponse(
@@ -193,6 +213,7 @@ async def chat_with_image(
         )
     
     except Exception as e:
+        print(f"Image processing error: {e}")
         raise HTTPException(status_code=500, detail=f"Image processing failed: {str(e)}")
 
 @app.get("/api/chat/history")
@@ -232,22 +253,44 @@ async def purchase_credits(
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     
+    # Valid credit packages with South African pricing
+    credit_packages = {
+        5: 5,    # R 5 for 5 credits
+        10: 10,  # R 10 for 10 credits  
+        25: 20,  # R 20 for 25 credits (bonus!)
+        50: 40,  # R 40 for 50 credits (better deal!)
+        100: 75  # R 75 for 100 credits (best value!)
+    }
+    
+    if amount not in credit_packages:
+        raise HTTPException(status_code=400, detail="Invalid credit package. Choose from: 5, 10, 25, 50, or 100 credits")
+    
     # Mock payment processing - in production, integrate with payment gateway
-    if amount in [10, 50, 100]:  # Valid credit packages
+    try:
+        # Add credits to user account
         user.credits += amount
         
         # Record credit purchase
         credit_record = Credit(
             user_id=user.id,
             amount=amount,
-            transaction_type="purchase"
+            transaction_type="purchase",
+            description=f"Purchased {amount} credits for R{credit_packages[amount]}"
         )
         db.add(credit_record)
         db.commit()
         
-        return {"message": f"Successfully purchased {amount} credits", "new_balance": user.credits}
-    else:
-        raise HTTPException(status_code=400, detail="Invalid credit amount")
+        return {
+            "success": True,
+            "message": f"🎉 Successfully purchased {amount} credits for R{credit_packages[amount]}!", 
+            "new_balance": user.credits,
+            "amount_purchased": amount,
+            "cost": credit_packages[amount]
+        }
+        
+    except Exception as e:
+        print(f"Credit purchase error: {e}")
+        raise HTTPException(status_code=500, detail="Credit purchase failed. Please try again.")
 
 @app.get("/api/credits", response_model=CreditResponse)
 async def get_credits(
@@ -261,6 +304,19 @@ async def get_credits(
         raise HTTPException(status_code=404, detail="User not found")
     
     return CreditResponse(credits=user.credits)
+
+@app.get("/api/credits/packages")
+async def get_credit_packages():
+    """Get available credit packages"""
+    return {
+        "packages": [
+            {"credits": 5, "price": 5, "currency": "R", "description": "Starter Pack"},
+            {"credits": 10, "price": 10, "currency": "R", "description": "Popular Choice"},
+            {"credits": 25, "price": 20, "currency": "R", "description": "Great Value!", "bonus": True},
+            {"credits": 50, "price": 40, "currency": "R", "description": "Family Pack", "bonus": True},
+            {"credits": 100, "price": 75, "currency": "R", "description": "Best Deal!", "bonus": True}
+        ]
+    }
 
 if __name__ == "__main__":
     import uvicorn
