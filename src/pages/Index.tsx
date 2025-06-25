@@ -646,7 +646,7 @@ const Index = () => {
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
             <p className="font-medium">
               &copy; 2024 StudyBuddy. 🌍 Making homework adventures fun for
-              families across Kenya and beyond!
+              families across South Africa and beyond!
             </p>
           </div>
         </div>
