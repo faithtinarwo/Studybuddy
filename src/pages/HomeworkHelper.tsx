@@ -64,7 +64,7 @@ const HomeworkHelper = () => {
       id: "1",
       type: "ai",
       content:
-        "🌟 Hi there! I'm StudyBuddy, your super smart AI homework helper! 🤖✨ I'm here to make learning fun and easy for you and your family! \n\n📸 You can take a photo of your homework question, or just type it out - I'm ready to help with math, science, English, and more! \n\n🎯 Let's turn homework time into an awesome adventure! What would you like to learn about today?",
+        "Hi there! I'm StudyBuddy, your AI homework helper. I'm here to make learning easier and more effective for you and your family.\n\nYou can take a photo of your homework question or type it directly - I'm ready to help with math, science, English, and more subjects.\n\nLet's make homework time productive! What would you like help with today?",
       timestamp: new Date(),
     },
   ]);
@@ -252,7 +252,7 @@ From your image, I can see this is a ${subject || "homework"} question that need
 
 👨‍👩‍👧‍👦 **Parent Tip**: Encourage your child to explain each step back to you - this helps them really understand the concept!
 
-🌟 **Remember**: It's okay to make mistakes - that's how we learn and grow! You're doing great! 
+🌟 **Remember**: It's okay to make mistakes - that's how we learn and grow! You're doing great!
 
 Need me to explain any part in more detail? I'm here to help! 💪✨`;
     }
@@ -267,7 +267,7 @@ Math can be like solving a fun puzzle! Let's break it down:
 📊 **Step-by-Step Solution:**
 
 1️⃣ **Read Carefully**: First, let's read the problem twice to understand what it's asking
-2️�� **Find the Numbers**: What numbers do we have to work with?
+2️⃣ **Find the Numbers**: What numbers do we have to work with?
 3️⃣ **Choose the Operation**: Do we need to add ➕, subtract ➖, multiply ✖️, or divide ➗?
 4️⃣ **Solve**: Let's work through it together!
 5️⃣ **Check**: Does our answer make sense?
@@ -330,7 +330,7 @@ What part of English would you like to work on? Let's create something amazing t
 💡 **Let's Figure This Out Together:**
 
 🎯 **Step 1**: Let's understand exactly what you're asking
-🔍 **Step 2**: Break down the problem into smaller pieces  
+🔍 **Step 2**: Break down the problem into smaller pieces
 💪 **Step 3**: Work through each piece together
 ✨ **Step 4**: Put it all together for the final answer!
 
@@ -338,7 +338,7 @@ What part of English would you like to work on? Let's create something amazing t
 
 🚀 **Fun Learning Fact**: Your brain grows stronger every time you learn something new - you're literally becoming smarter right now!
 
-What subject is this question about? I can give you more specific help once I know if it's math, science, English, or something else! 
+What subject is this question about? I can give you more specific help once I know if it's math, science, English, or something else!
 
 Keep up the amazing work! 🌟💝`;
     }
@@ -535,7 +535,7 @@ Keep up the amazing work! 🌟💝`;
               <CardHeader className="pb-3">
                 <CardTitle className="text-lg flex items-center font-black text-kids-purple">
                   <Sparkles className="w-5 h-5 mr-2 text-kids-yellow-bright" />
-                  🎯 Quick Start
+                  Quick Start
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
@@ -576,32 +576,26 @@ Keep up the amazing work! 🌟💝`;
               <CardHeader className="pb-3">
                 <CardTitle className="text-lg flex items-center font-black text-kids-purple">
                   <Star className="w-5 h-5 mr-2 text-kids-yellow-bright" />
-                  🎯 Learning Tips
+                  Learning Tips
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3 text-sm">
                 <div className="flex items-start space-x-2">
                   <Star className="w-4 h-4 text-kids-yellow-bright mt-0.5 flex-shrink-0" />
-                  <span className="font-medium">
-                    📸 Take clear, bright photos
-                  </span>
+                  <span className="font-medium">Take clear, bright photos</span>
+                </div>
+                <div className="flex items-start space-x-2">
+                  <Star className="w-4 h-4 text-kids-yellow-bright mt-0.5 flex-shrink-0" />
+                  <span className="font-medium">Include the full question</span>
+                </div>
+                <div className="flex items-start space-x-2">
+                  <Star className="w-4 h-4 text-kids-yellow-bright mt-0.5 flex-shrink-0" />
+                  <span className="font-medium">Ask follow-up questions</span>
                 </div>
                 <div className="flex items-start space-x-2">
                   <Star className="w-4 h-4 text-kids-yellow-bright mt-0.5 flex-shrink-0" />
                   <span className="font-medium">
-                    📝 Include the full question
-                  </span>
-                </div>
-                <div className="flex items-start space-x-2">
-                  <Star className="w-4 h-4 text-kids-yellow-bright mt-0.5 flex-shrink-0" />
-                  <span className="font-medium">
-                    🤔 Ask follow-up questions
-                  </span>
-                </div>
-                <div className="flex items-start space-x-2">
-                  <Star className="w-4 h-4 text-kids-yellow-bright mt-0.5 flex-shrink-0" />
-                  <span className="font-medium">
-                    👨‍👩‍👧‍👦 Learn together with family
+                    Learn together with family
                   </span>
                 </div>
               </CardContent>
@@ -611,13 +605,14 @@ Keep up the amazing work! 🌟💝`;
               <Card className="border-2 border-kids-orange bg-gradient-to-br from-kids-orange/10 to-kids-yellow/10 rounded-2xl shadow-xl">
                 <CardHeader className="pb-3">
                   <CardTitle className="text-lg flex items-center text-kids-orange font-black">
-                    <AlertCircle className="w-5 w-5 mr-2" />⚡ Low Credits!
+                    <AlertCircle className="w-5 w-5 mr-2" />
+                    Low Credits
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-kids-orange font-medium mb-3">
-                    🎯 You're running low on learning power! Get more credits
-                    for unlimited homework adventures!
+                    You're running low on credits. Purchase more to continue
+                    getting homework help.
                   </p>
                   <div className="space-y-2">
                     <Button
@@ -640,14 +635,14 @@ Keep up the amazing work! 🌟💝`;
                 <div className="flex items-center justify-between">
                   <CardTitle className="flex items-center font-black text-kids-purple">
                     <Bot className="w-6 h-6 mr-3 text-kids-purple animate-bounce-gentle" />
-                    🤖 AI Homework Helper
+                    AI Homework Helper
                   </CardTitle>
                   <Badge
                     variant="outline"
                     className="bg-kids-green text-white border-kids-green font-bold"
                   >
                     <div className="w-2 h-2 bg-white rounded-full mr-2 animate-pulse"></div>
-                    🌟 Online & Ready!
+                    Online & Ready
                   </Badge>
                 </div>
               </CardHeader>
@@ -763,7 +758,7 @@ Keep up the amazing work! 🌟💝`;
                 <div className="flex items-end space-x-3">
                   <div className="flex-1">
                     <Textarea
-                      placeholder="✨ Type your homework question here or upload a photo! I'm excited to help you learn! 🎯"
+                      placeholder="Type your homework question here or upload a photo. I'm ready to help you learn!"
                       value={inputMessage}
                       onChange={(e) => setInputMessage(e.target.value)}
                       className="min-h-[60px] resize-none border-2 border-kids-yellow/50 rounded-xl focus:border-kids-purple font-medium"
@@ -811,13 +806,13 @@ Keep up the amazing work! 🌟💝`;
                 {credits <= 0 && (
                   <div className="mt-3 p-4 bg-gradient-to-r from-kids-orange/20 to-kids-yellow/20 border-2 border-kids-orange rounded-xl">
                     <p className="text-sm text-kids-orange font-bold">
-                      🎯 Oops! You've used all your learning credits!{" "}
+                      You've used all your credits.{" "}
                       <Button
                         variant="link"
                         className="p-0 h-auto text-kids-orange underline font-bold"
                         onClick={() => setShowCreditDialog(true)}
                       >
-                        Get more credits to continue the fun!
+                        Purchase more credits to continue.
                       </Button>
                     </p>
                   </div>

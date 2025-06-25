@@ -254,18 +254,18 @@ const Index = () => {
           <div className="animate-fade-in">
             <Badge className="mb-6 bg-kids-yellow text-kids-purple-dark hover:bg-kids-yellow-bright font-bold text-lg py-2 px-4 animate-wiggle">
               <Sparkles className="w-4 h-4 mr-2" />
-              AI-Powered Fun Learning!
+              AI-Powered Learning Assistant
             </Badge>
             <h1 className="text-4xl md:text-7xl font-black text-gray-900 mb-6 leading-tight">
               Make Homework
               <span className="block kids-gradient-purple bg-clip-text text-transparent animate-bounce-gentle">
-                Super Fun & Easy!
+                Fun & Easy!
               </span>
             </h1>
             <p className="text-xl md:text-2xl text-gray-700 mb-8 max-w-4xl mx-auto leading-relaxed font-medium">
-              🌟 Help your kids succeed with our AI homework buddy! 📸 Snap
-              photos, 💬 chat with AI, and watch learning become an exciting
-              adventure! ✨
+              Help your kids succeed with our AI homework assistant. Snap
+              photos, chat with AI, and watch learning become an exciting
+              adventure for the whole family.
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
               <Link to="/homework-helper">
@@ -273,7 +273,7 @@ const Index = () => {
                   size="lg"
                   className="bright-button px-10 py-6 text-xl font-black rounded-2xl shadow-2xl"
                 >
-                  🚀 Start Learning Now! <ArrowRight className="ml-3 h-6 w-6" />
+                  Start Learning Now <ArrowRight className="ml-3 h-6 w-6" />
                 </Button>
               </Link>
               <Button
@@ -281,21 +281,21 @@ const Index = () => {
                 size="lg"
                 className="px-10 py-6 text-xl font-bold border-3 border-kids-purple text-kids-purple hover:bg-kids-purple hover:text-white rounded-2xl transition-all duration-300"
               >
-                🎬 Watch Demo
+                Watch Demo
               </Button>
             </div>
             <div className="mt-12 flex items-center justify-center space-x-8 text-lg font-medium text-gray-600">
               <div className="flex items-center">
-                <CheckCircle className="h-6 w-6 text-kids-green mr-3" />✨ Free
-                trial available
+                <CheckCircle className="h-6 w-6 text-kids-green mr-3" />
+                Free trial available
               </div>
               <div className="flex items-center">
                 <CheckCircle className="h-6 w-6 text-kids-green mr-3" />
-                🎯 No subscription required
+                No subscription required
               </div>
               <div className="flex items-center">
                 <CheckCircle className="h-6 w-6 text-kids-green mr-3" />
-                📚 All subjects covered
+                All subjects covered
               </div>
             </div>
           </div>
@@ -308,11 +308,11 @@ const Index = () => {
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-6">
               Everything You Need for{" "}
-              <span className="gradient-text">Amazing Learning!</span>
+              <span className="gradient-text">Amazing Learning</span>
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto font-medium">
-              🎓 Our AI buddy makes homework time the best part of the day for
-              kids and parents!
+              Our AI assistant makes homework time enjoyable and productive for
+              kids and parents alike.
             </p>
           </div>
 
@@ -349,10 +349,10 @@ const Index = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-6">
-              Super Easy as <span className="gradient-text">1-2-3!</span>
+              Simple as <span className="gradient-text">1-2-3</span>
             </h2>
             <p className="text-xl text-gray-600 font-medium">
-              🎯 Get homework help in just three magical steps!
+              Get homework help in just three easy steps.
             </p>
           </div>
 
@@ -361,10 +361,10 @@ const Index = () => {
               <div className="kids-gradient-yellow text-white w-20 h-20 rounded-full flex items-center justify-center text-3xl font-black mx-auto mb-6 shadow-2xl animate-bounce-gentle">
                 1
               </div>
-              <h3 className="text-3xl font-black mb-4">📸 Snap or Ask</h3>
+              <h3 className="text-3xl font-black mb-4">Snap or Ask</h3>
               <p className="text-gray-600 leading-relaxed text-lg">
-                Take a fun photo of homework or type your question in our
-                colorful chat!
+                Take a clear photo of homework or type your question directly
+                into our chat interface.
               </p>
             </div>
             <div className="text-center">
@@ -374,10 +374,10 @@ const Index = () => {
               >
                 2
               </div>
-              <h3 className="text-3xl font-black mb-4">🤖 AI Magic</h3>
+              <h3 className="text-3xl font-black mb-4">AI Analysis</h3>
               <p className="text-gray-600 leading-relaxed text-lg">
-                Our smart AI buddy reads and understands, then creates amazing
-                step-by-step explanations!
+                Our smart AI reads and understands, then creates detailed
+                step-by-step explanations.
               </p>
             </div>
             <div className="text-center">
@@ -387,10 +387,10 @@ const Index = () => {
               >
                 3
               </div>
-              <h3 className="text-3xl font-black mb-4">🎉 Learn Together</h3>
+              <h3 className="text-3xl font-black mb-4">Learn Together</h3>
               <p className="text-gray-600 leading-relaxed text-lg">
-                Get super clear explanations that help parents and kids learn
-                together with smiles!
+                Get clear explanations that help parents and kids learn together
+                effectively.
               </p>
             </div>
           </div>
@@ -402,11 +402,11 @@ const Index = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-6">
-              <span className="gradient-text">Amazing Value</span> for Every
-              Family!
+              <span className="gradient-text">Great Value</span> for Every
+              Family
             </h2>
             <p className="text-xl text-gray-600 font-medium">
-              💰 Choose the perfect plan for your family's learning adventure!
+              Choose the perfect plan for your family's learning needs.
             </p>
           </div>
 
@@ -422,7 +422,7 @@ const Index = () => {
               >
                 {plan.popular && (
                   <Badge className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-kids-yellow text-kids-purple-dark font-black text-lg py-2 px-6 animate-wiggle">
-                    🌟 Most Popular!
+                    Most Popular
                   </Badge>
                 )}
                 <CardHeader className="text-center pb-6">
@@ -453,8 +453,8 @@ const Index = () => {
                     }`}
                   >
                     {plan.name === "School Partnership"
-                      ? "🏫 Contact Us"
-                      : "🚀 Get Started"}
+                      ? "Contact Us"
+                      : "Get Started"}
                   </Button>
                 </CardContent>
               </Card>
@@ -468,10 +468,10 @@ const Index = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-6">
-              What <span className="gradient-text">Happy Families</span> Say!
+              What <span className="gradient-text">Families</span> Say
             </h2>
             <p className="text-xl text-gray-600 font-medium">
-              💕 Real stories from families having homework adventures!
+              Real stories from families who love StudyBuddy.
             </p>
           </div>
 
@@ -517,10 +517,11 @@ const Index = () => {
       <section className="py-20 kids-gradient-purple">
         <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
           <h2 className="text-4xl md:text-5xl font-black text-white mb-6">
-            🎯 Ready for Homework Adventures?
+            Ready to Start Learning?
           </h2>
           <p className="text-xl text-kids-yellow-light mb-8 font-medium">
-            🌟 Join thousands of families making learning super fun and easy!
+            Join thousands of families making homework time easier and more
+            effective.
           </p>
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
             <Link to="/homework-helper">
@@ -528,12 +529,12 @@ const Index = () => {
                 size="lg"
                 className="bg-kids-yellow hover:bg-kids-yellow-bright text-kids-purple-dark px-10 py-6 text-xl font-black rounded-2xl shadow-2xl hover:scale-105 transition-all duration-300"
               >
-                🚀 Start Free Adventure! <ArrowRight className="ml-3 h-6 w-6" />
+                Start Free Trial <ArrowRight className="ml-3 h-6 w-6" />
               </Button>
             </Link>
             <div className="flex items-center text-kids-yellow-light font-medium">
               <Smartphone className="h-6 w-6 mr-3" />
-              📱 Works on all devices!
+              Works on all devices
             </div>
           </div>
         </div>
@@ -551,8 +552,8 @@ const Index = () => {
                 <span className="text-xl font-black">StudyBuddy</span>
               </div>
               <p className="text-gray-400 leading-relaxed font-medium">
-                🌟 Empowering families to make learning an exciting adventure
-                through AI-powered homework assistance!
+                Empowering families to make learning an exciting adventure
+                through AI-powered homework assistance.
               </p>
             </div>
             <div>
@@ -563,7 +564,7 @@ const Index = () => {
                     href="#features"
                     className="hover:text-kids-yellow transition-colors font-medium"
                   >
-                    ✨ Features
+                    Features
                   </a>
                 </li>
                 <li>
@@ -571,7 +572,7 @@ const Index = () => {
                     href="#pricing"
                     className="hover:text-kids-yellow transition-colors font-medium"
                   >
-                    💰 Pricing
+                    Pricing
                   </a>
                 </li>
                 <li>
@@ -579,7 +580,7 @@ const Index = () => {
                     to="/homework-helper"
                     className="hover:text-kids-yellow transition-colors font-medium"
                   >
-                    🚀 Try Now
+                    Try Now
                   </Link>
                 </li>
               </ul>
@@ -592,7 +593,7 @@ const Index = () => {
                     href="#"
                     className="hover:text-kids-yellow transition-colors font-medium"
                   >
-                    🆘 Help Center
+                    Help Center
                   </a>
                 </li>
                 <li>
@@ -600,7 +601,7 @@ const Index = () => {
                     href="#"
                     className="hover:text-kids-yellow transition-colors font-medium"
                   >
-                    📞 Contact Us
+                    Contact Us
                   </a>
                 </li>
                 <li>
@@ -608,7 +609,7 @@ const Index = () => {
                     href="#"
                     className="hover:text-kids-yellow transition-colors font-medium"
                   >
-                    🔒 Privacy Policy
+                    Privacy Policy
                   </a>
                 </li>
               </ul>
@@ -621,7 +622,7 @@ const Index = () => {
                     href="#"
                     className="hover:text-kids-yellow transition-colors font-medium"
                   >
-                    📱 WhatsApp Support
+                    WhatsApp Support
                   </a>
                 </li>
                 <li>
@@ -629,7 +630,7 @@ const Index = () => {
                     href="#"
                     className="hover:text-kids-yellow transition-colors font-medium"
                   >
-                    📧 Email Us
+                    Email Us
                   </a>
                 </li>
                 <li>
@@ -637,7 +638,7 @@ const Index = () => {
                     href="#"
                     className="hover:text-kids-yellow transition-colors font-medium"
                   >
-                    🏫 School Partnerships
+                    School Partnerships
                   </a>
                 </li>
               </ul>
@@ -645,8 +646,8 @@ const Index = () => {
           </div>
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
             <p className="font-medium">
-              &copy; 2024 StudyBuddy. 🌍 Making homework adventures fun for
-              families across South Africa and beyond!
+              &copy; 2024 StudyBuddy. Making homework easier for families across
+              South Africa and beyond.
             </p>
           </div>
         </div>
