@@ -52,7 +52,20 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        // Custom brand colors for homework helper
+        // Kids-friendly bright colors
+        kids: {
+          yellow: "hsl(var(--kids-yellow))",
+          "yellow-bright": "hsl(var(--kids-yellow-bright))",
+          "yellow-light": "hsl(var(--kids-yellow-light))",
+          purple: "hsl(var(--kids-purple))",
+          "purple-dark": "hsl(var(--kids-purple-dark))",
+          "purple-light": "hsl(var(--kids-purple-light))",
+          orange: "hsl(var(--kids-orange))",
+          green: "hsl(var(--kids-green))",
+          pink: "hsl(var(--kids-pink))",
+          blue: "hsl(var(--kids-blue))",
+        },
+        // Custom brand colors
         brand: {
           50: "hsl(var(--brand-50))",
           100: "hsl(var(--brand-100))",
@@ -116,12 +129,45 @@ export default {
             transform: "translateY(0)",
           },
         },
+        "bounce-gentle": {
+          "0%, 100%": {
+            transform: "translateY(0)",
+          },
+          "50%": {
+            transform: "translateY(-5px)",
+          },
+        },
+        wiggle: {
+          "0%, 100%": {
+            transform: "rotate(0deg)",
+          },
+          "25%": {
+            transform: "rotate(1deg)",
+          },
+          "75%": {
+            transform: "rotate(-1deg)",
+          },
+        },
+        rainbow: {
+          "0%": {
+            "background-position": "0% 50%",
+          },
+          "50%": {
+            "background-position": "100% 50%",
+          },
+          "100%": {
+            "background-position": "0% 50%",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "fade-in": "fade-in 0.5s ease-out",
         "slide-up": "slide-up 0.6s ease-out",
+        "bounce-gentle": "bounce-gentle 2s infinite",
+        wiggle: "wiggle 0.5s ease-in-out",
+        rainbow: "rainbow 3s ease infinite",
       },
     },
   },

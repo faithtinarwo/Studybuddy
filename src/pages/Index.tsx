@@ -25,6 +25,9 @@ import {
   Award,
   Smartphone,
   Globe,
+  Sparkles,
+  Bot,
+  GraduationCap,
 } from "lucide-react";
 
 const Index = () => {
@@ -33,38 +36,44 @@ const Index = () => {
   const features = [
     {
       icon: Camera,
-      title: "Photo Upload",
+      title: "Snap & Learn",
       description:
-        "Simply take a photo of homework questions and get instant help",
+        "Just take a photo of homework and get instant, fun explanations!",
+      color: "kids-orange",
     },
     {
-      icon: MessageCircle,
-      title: "AI Chat Assistant",
+      icon: Bot,
+      title: "AI Study Buddy",
       description:
-        "Interactive AI that explains concepts in simple, parent-friendly language",
+        "Chat with our friendly AI tutor who makes learning fun and easy",
+      color: "kids-purple",
     },
     {
       icon: BookOpen,
       title: "All Subjects",
       description:
-        "Math, Science, English, Social Studies - we cover everything",
+        "Math, Science, English, Social Studies - we've got it all covered!",
+      color: "kids-green",
     },
     {
       icon: Clock,
-      title: "24/7 Available",
+      title: "24/7 Helper",
       description:
-        "Get help anytime, whether it's evening homework or weekend projects",
+        "Get help anytime - morning, noon, or night homework sessions",
+      color: "kids-blue",
     },
     {
       icon: Users,
       title: "Family Friendly",
       description:
-        "Designed specifically for busy parents helping their children",
+        "Made especially for busy parents helping their awesome kids",
+      color: "kids-pink",
     },
     {
       icon: Award,
-      title: "Educational Focus",
-      description: "Not just answers - explanations that help children learn",
+      title: "Learn & Grow",
+      description: "Not just answers - we help children understand and learn!",
+      color: "kids-yellow-bright",
     },
   ];
 
@@ -73,40 +82,41 @@ const Index = () => {
       name: "Sarah M.",
       role: "Mother of 2",
       content:
-        "This app saved my evenings! I can finally help my kids with math homework without feeling lost.",
+        "My kids love the colorful explanations! Homework time is actually fun now instead of stressful.",
       rating: 5,
     },
     {
       name: "James K.",
       role: "Father of 3",
       content:
-        "Perfect for science questions I haven't thought about since school. My daughter loves the explanations.",
+        "The AI tutor explains things so clearly. My daughter actually looks forward to doing homework!",
       rating: 5,
     },
     {
       name: "Maria L.",
       role: "Working Mom",
       content:
-        "Worth every shilling! Quick, accurate, and explains things so I can help my son understand.",
+        "Best investment for our family! The kids can get help even when I'm busy at work.",
       rating: 5,
     },
   ];
 
   const pricingPlans = [
     {
-      name: "Pay-per-Use",
+      name: "Try It Out",
       price: "KES 5-10",
       description: "per question",
       features: [
         "Instant AI responses",
         "Photo upload support",
-        "Basic explanations",
-        "No commitment",
+        "Fun explanations",
+        "No commitment needed",
       ],
       popular: false,
+      color: "kids-blue",
     },
     {
-      name: "Family Plan",
+      name: "Family Fun Pack",
       price: "KES 500",
       description: "per month",
       features: [
@@ -115,34 +125,36 @@ const Index = () => {
         "Detailed explanations",
         "Family progress tracking",
         "Priority support",
-        "Homework reminders",
+        "Fun homework reminders",
       ],
       popular: true,
+      color: "kids-purple",
     },
     {
       name: "School Partnership",
       price: "Custom",
       description: "pricing",
       features: [
-        "Bulk discounts",
+        "Bulk family discounts",
         "Teacher dashboard",
         "Student progress reports",
         "Custom integrations",
         "Dedicated support",
       ],
       popular: false,
+      color: "kids-green",
     },
   ];
 
   return (
-    <div className="min-h-screen gradient-bg">
+    <div className="min-h-screen kids-gradient-bg">
       {/* Navigation */}
-      <nav className="border-b bg-white/80 backdrop-blur-md sticky top-0 z-50">
+      <nav className="border-b bg-white/90 backdrop-blur-md sticky top-0 z-50 border-kids-yellow/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-2">
-              <div className="bg-brand-500 p-2 rounded-lg">
-                <BookOpen className="h-6 w-6 text-white" />
+              <div className="bg-gradient-to-r from-kids-purple to-brand-500 p-2 rounded-xl animate-bounce-gentle">
+                <GraduationCap className="h-6 w-6 text-white" />
               </div>
               <span className="text-xl font-bold gradient-text">
                 StudyBuddy
@@ -153,30 +165,30 @@ const Index = () => {
             <div className="hidden md:flex items-center space-x-8">
               <a
                 href="#features"
-                className="text-gray-700 hover:text-brand-600 transition-colors"
+                className="text-gray-700 hover:text-kids-purple font-medium transition-colors"
               >
                 Features
               </a>
               <a
                 href="#how-it-works"
-                className="text-gray-700 hover:text-brand-600 transition-colors"
+                className="text-gray-700 hover:text-kids-purple font-medium transition-colors"
               >
                 How it Works
               </a>
               <a
                 href="#pricing"
-                className="text-gray-700 hover:text-brand-600 transition-colors"
+                className="text-gray-700 hover:text-kids-purple font-medium transition-colors"
               >
                 Pricing
               </a>
               <a
                 href="#testimonials"
-                className="text-gray-700 hover:text-brand-600 transition-colors"
+                className="text-gray-700 hover:text-kids-purple font-medium transition-colors"
               >
                 Reviews
               </a>
               <Link to="/homework-helper">
-                <Button className="bg-brand-500 hover:bg-brand-600">
+                <Button className="bright-button">
                   Try Now <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
@@ -201,24 +213,34 @@ const Index = () => {
 
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
-          <div className="md:hidden bg-white border-t">
+          <div className="md:hidden bg-white border-t border-kids-yellow/30">
             <div className="px-2 pt-2 pb-3 space-y-1">
-              <a href="#features" className="block px-3 py-2 text-gray-700">
+              <a
+                href="#features"
+                className="block px-3 py-2 text-gray-700 font-medium"
+              >
                 Features
               </a>
-              <a href="#how-it-works" className="block px-3 py-2 text-gray-700">
+              <a
+                href="#how-it-works"
+                className="block px-3 py-2 text-gray-700 font-medium"
+              >
                 How it Works
               </a>
-              <a href="#pricing" className="block px-3 py-2 text-gray-700">
+              <a
+                href="#pricing"
+                className="block px-3 py-2 text-gray-700 font-medium"
+              >
                 Pricing
               </a>
-              <a href="#testimonials" className="block px-3 py-2 text-gray-700">
+              <a
+                href="#testimonials"
+                className="block px-3 py-2 text-gray-700 font-medium"
+              >
                 Reviews
               </a>
               <Link to="/homework-helper" className="block px-3 py-2">
-                <Button className="w-full bg-brand-500 hover:bg-brand-600">
-                  Try Now
-                </Button>
+                <Button className="w-full bright-button">Try Now</Button>
               </Link>
             </div>
           </div>
@@ -226,47 +248,54 @@ const Index = () => {
       </nav>
 
       {/* Hero Section */}
-      <section className="pt-20 pb-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto text-center">
+      <section className="pt-20 pb-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-kids-yellow-light/50 via-transparent to-kids-purple-light/50"></div>
+        <div className="max-w-7xl mx-auto text-center relative">
           <div className="animate-fade-in">
-            <Badge className="mb-6 bg-brand-100 text-brand-700 hover:bg-brand-200">
-              <Zap className="w-3 h-3 mr-1" />
-              AI-Powered Homework Assistant
+            <Badge className="mb-6 bg-kids-yellow text-kids-purple-dark hover:bg-kids-yellow-bright font-bold text-lg py-2 px-4 animate-wiggle">
+              <Sparkles className="w-4 h-4 mr-2" />
+              AI-Powered Fun Learning!
             </Badge>
-            <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-              Never Feel Lost During
-              <span className="gradient-text block">Homework Time Again</span>
+            <h1 className="text-4xl md:text-7xl font-black text-gray-900 mb-6 leading-tight">
+              Make Homework
+              <span className="block kids-gradient-purple bg-clip-text text-transparent animate-bounce-gentle">
+                Super Fun & Easy!
+              </span>
             </h1>
-            <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
-              Help your children succeed with our AI-powered homework assistant.
-              Upload photos of questions or chat with our AI tutor for instant,
-              parent-friendly explanations.
+            <p className="text-xl md:text-2xl text-gray-700 mb-8 max-w-4xl mx-auto leading-relaxed font-medium">
+              🌟 Help your kids succeed with our AI homework buddy! 📸 Snap
+              photos, 💬 chat with AI, and watch learning become an exciting
+              adventure! ✨
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
               <Link to="/homework-helper">
                 <Button
                   size="lg"
-                  className="bg-brand-500 hover:bg-brand-600 px-8 py-4 text-lg"
+                  className="bright-button px-10 py-6 text-xl font-black rounded-2xl shadow-2xl"
                 >
-                  Start Helping Now <ArrowRight className="ml-2 h-5 w-5" />
+                  🚀 Start Learning Now! <ArrowRight className="ml-3 h-6 w-6" />
                 </Button>
               </Link>
-              <Button variant="outline" size="lg" className="px-8 py-4 text-lg">
-                Watch Demo
+              <Button
+                variant="outline"
+                size="lg"
+                className="px-10 py-6 text-xl font-bold border-3 border-kids-purple text-kids-purple hover:bg-kids-purple hover:text-white rounded-2xl transition-all duration-300"
+              >
+                🎬 Watch Demo
               </Button>
             </div>
-            <div className="mt-12 flex items-center justify-center space-x-6 text-sm text-gray-500">
+            <div className="mt-12 flex items-center justify-center space-x-8 text-lg font-medium text-gray-600">
               <div className="flex items-center">
-                <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
-                Free trial available
+                <CheckCircle className="h-6 w-6 text-kids-green mr-3" />✨ Free
+                trial available
               </div>
               <div className="flex items-center">
-                <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
-                No subscription required
+                <CheckCircle className="h-6 w-6 text-kids-green mr-3" />
+                🎯 No subscription required
               </div>
               <div className="flex items-center">
-                <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
-                All subjects covered
+                <CheckCircle className="h-6 w-6 text-kids-green mr-3" />
+                📚 All subjects covered
               </div>
             </div>
           </div>
@@ -277,13 +306,13 @@ const Index = () => {
       <section id="features" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Everything You Need to{" "}
-              <span className="gradient-text">Help Your Child</span>
+            <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-6">
+              Everything You Need for{" "}
+              <span className="gradient-text">Amazing Learning!</span>
             </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Our AI assistant makes homework time less stressful for both
-              parents and children
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto font-medium">
+              🎓 Our AI buddy makes homework time the best part of the day for
+              kids and parents!
             </p>
           </div>
 
@@ -291,16 +320,21 @@ const Index = () => {
             {features.map((feature, index) => (
               <Card
                 key={index}
-                className="p-6 hover:shadow-lg transition-shadow animate-slide-up border-0 shadow-md"
+                className="p-6 hover:shadow-2xl transition-all duration-300 animate-slide-up border-0 fun-shadow hover:scale-105 rounded-2xl"
+                style={{ animationDelay: `${index * 0.1}s` }}
               >
                 <CardHeader className="pb-4">
-                  <div className="bg-brand-100 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
-                    <feature.icon className="h-6 w-6 text-brand-600" />
+                  <div
+                    className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-4 bg-${feature.color} shadow-lg`}
+                  >
+                    <feature.icon className="h-8 w-8 text-white" />
                   </div>
-                  <CardTitle className="text-xl">{feature.title}</CardTitle>
+                  <CardTitle className="text-2xl font-bold">
+                    {feature.title}
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <CardDescription className="text-gray-600 leading-relaxed">
+                  <CardDescription className="text-gray-600 leading-relaxed text-lg">
                     {feature.description}
                   </CardDescription>
                 </CardContent>
@@ -311,46 +345,52 @@ const Index = () => {
       </section>
 
       {/* How It Works Section */}
-      <section id="how-it-works" className="py-20 gradient-bg">
+      <section id="how-it-works" className="py-20 kids-gradient-bg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Simple as <span className="gradient-text">1-2-3</span>
+            <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-6">
+              Super Easy as <span className="gradient-text">1-2-3!</span>
             </h2>
-            <p className="text-xl text-gray-600">
-              Get homework help in just three easy steps
+            <p className="text-xl text-gray-600 font-medium">
+              🎯 Get homework help in just three magical steps!
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-12">
             <div className="text-center">
-              <div className="bg-brand-500 text-white w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-6">
+              <div className="kids-gradient-yellow text-white w-20 h-20 rounded-full flex items-center justify-center text-3xl font-black mx-auto mb-6 shadow-2xl animate-bounce-gentle">
                 1
               </div>
-              <h3 className="text-2xl font-semibold mb-4">Upload or Ask</h3>
-              <p className="text-gray-600 leading-relaxed">
-                Take a photo of the homework question or type your question
-                directly into the chat
+              <h3 className="text-3xl font-black mb-4">📸 Snap or Ask</h3>
+              <p className="text-gray-600 leading-relaxed text-lg">
+                Take a fun photo of homework or type your question in our
+                colorful chat!
               </p>
             </div>
             <div className="text-center">
-              <div className="bg-brand-500 text-white w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-6">
+              <div
+                className="kids-gradient-purple text-white w-20 h-20 rounded-full flex items-center justify-center text-3xl font-black mx-auto mb-6 shadow-2xl animate-bounce-gentle"
+                style={{ animationDelay: "0.2s" }}
+              >
                 2
               </div>
-              <h3 className="text-2xl font-semibold mb-4">AI Analyzes</h3>
-              <p className="text-gray-600 leading-relaxed">
-                Our AI understands the question and prepares a clear,
-                step-by-step explanation
+              <h3 className="text-3xl font-black mb-4">🤖 AI Magic</h3>
+              <p className="text-gray-600 leading-relaxed text-lg">
+                Our smart AI buddy reads and understands, then creates amazing
+                step-by-step explanations!
               </p>
             </div>
             <div className="text-center">
-              <div className="bg-brand-500 text-white w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-6">
+              <div
+                className="bg-kids-green text-white w-20 h-20 rounded-full flex items-center justify-center text-3xl font-black mx-auto mb-6 shadow-2xl animate-bounce-gentle"
+                style={{ animationDelay: "0.4s" }}
+              >
                 3
               </div>
-              <h3 className="text-2xl font-semibold mb-4">Learn Together</h3>
-              <p className="text-gray-600 leading-relaxed">
-                Get parent-friendly explanations that help you guide your child
-                through the solution
+              <h3 className="text-3xl font-black mb-4">🎉 Learn Together</h3>
+              <p className="text-gray-600 leading-relaxed text-lg">
+                Get super clear explanations that help parents and kids learn
+                together with smiles!
               </p>
             </div>
           </div>
@@ -361,12 +401,12 @@ const Index = () => {
       <section id="pricing" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              <span className="gradient-text">Affordable</span> Help for Every
-              Family
+            <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-6">
+              <span className="gradient-text">Amazing Value</span> for Every
+              Family!
             </h2>
-            <p className="text-xl text-gray-600">
-              Choose the plan that works best for your family's needs
+            <p className="text-xl text-gray-600 font-medium">
+              💰 Choose the perfect plan for your family's learning adventure!
             </p>
           </div>
 
@@ -374,20 +414,26 @@ const Index = () => {
             {pricingPlans.map((plan, index) => (
               <Card
                 key={index}
-                className={`relative p-6 ${plan.popular ? "border-brand-500 shadow-xl scale-105" : "border-gray-200"}`}
+                className={`relative p-8 rounded-3xl transition-all duration-300 hover:scale-105 ${
+                  plan.popular
+                    ? "border-4 border-kids-purple shadow-2xl scale-105 bg-gradient-to-br from-kids-purple-light to-white"
+                    : "border-2 border-gray-200 hover:border-kids-yellow shadow-lg"
+                }`}
               >
                 {plan.popular && (
-                  <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-brand-500 text-white">
-                    Most Popular
+                  <Badge className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-kids-yellow text-kids-purple-dark font-black text-lg py-2 px-6 animate-wiggle">
+                    🌟 Most Popular!
                   </Badge>
                 )}
                 <CardHeader className="text-center pb-6">
-                  <CardTitle className="text-2xl">{plan.name}</CardTitle>
-                  <div className="mt-4">
-                    <span className="text-4xl font-bold text-gray-900">
+                  <CardTitle className="text-2xl font-black">
+                    {plan.name}
+                  </CardTitle>
+                  <div className="mt-6">
+                    <span className="text-5xl font-black text-gray-900">
                       {plan.price}
                     </span>
-                    <span className="text-gray-600 ml-2">
+                    <span className="text-gray-600 ml-2 text-xl font-medium">
                       {plan.description}
                     </span>
                   </div>
@@ -395,16 +441,20 @@ const Index = () => {
                 <CardContent className="space-y-4">
                   {plan.features.map((feature, featureIndex) => (
                     <div key={featureIndex} className="flex items-center">
-                      <CheckCircle className="h-5 w-5 text-green-500 mr-3 flex-shrink-0" />
-                      <span className="text-gray-600">{feature}</span>
+                      <CheckCircle className="h-6 w-6 text-kids-green mr-4 flex-shrink-0" />
+                      <span className="text-gray-600 font-medium">
+                        {feature}
+                      </span>
                     </div>
                   ))}
                   <Button
-                    className={`w-full mt-6 ${plan.popular ? "bg-brand-500 hover:bg-brand-600" : "bg-gray-900 hover:bg-gray-800"}`}
+                    className={`w-full mt-8 font-black text-lg py-4 rounded-2xl transition-all duration-300 ${
+                      plan.popular ? "bright-button" : "purple-button"
+                    }`}
                   >
                     {plan.name === "School Partnership"
-                      ? "Contact Us"
-                      : "Get Started"}
+                      ? "🏫 Contact Us"
+                      : "🚀 Get Started"}
                   </Button>
                 </CardContent>
               </Card>
@@ -414,41 +464,44 @@ const Index = () => {
       </section>
 
       {/* Testimonials Section */}
-      <section id="testimonials" className="py-20 gradient-bg">
+      <section id="testimonials" className="py-20 kids-gradient-bg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              What <span className="gradient-text">Parents Say</span>
+            <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-6">
+              What <span className="gradient-text">Happy Families</span> Say!
             </h2>
-            <p className="text-xl text-gray-600">
-              Real stories from families who've transformed homework time
+            <p className="text-xl text-gray-600 font-medium">
+              💕 Real stories from families having homework adventures!
             </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (
-              <Card key={index} className="p-6 border-0 shadow-md">
+              <Card
+                key={index}
+                className="p-6 border-0 shadow-xl rounded-2xl bg-white hover:scale-105 transition-all duration-300"
+              >
                 <CardContent className="pt-6">
                   <div className="flex mb-4">
                     {[...Array(testimonial.rating)].map((_, i) => (
                       <Star
                         key={i}
-                        className="h-5 w-5 text-yellow-400 fill-current"
+                        className="h-6 w-6 text-kids-yellow-bright fill-current"
                       />
                     ))}
                   </div>
-                  <p className="text-gray-600 mb-6 leading-relaxed">
+                  <p className="text-gray-600 mb-6 leading-relaxed text-lg font-medium">
                     "{testimonial.content}"
                   </p>
                   <div className="flex items-center">
-                    <div className="bg-brand-100 w-10 h-10 rounded-full flex items-center justify-center mr-3">
-                      <Heart className="h-5 w-5 text-brand-600" />
+                    <div className="bg-kids-pink w-12 h-12 rounded-full flex items-center justify-center mr-4">
+                      <Heart className="h-6 w-6 text-white" />
                     </div>
                     <div>
-                      <p className="font-semibold text-gray-900">
+                      <p className="font-black text-gray-900 text-lg">
                         {testimonial.name}
                       </p>
-                      <p className="text-sm text-gray-600">
+                      <p className="text-kids-purple font-medium">
                         {testimonial.role}
                       </p>
                     </div>
@@ -461,27 +514,26 @@ const Index = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-brand-500">
+      <section className="py-20 kids-gradient-purple">
         <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-            Ready to Make Homework Time Easier?
+          <h2 className="text-4xl md:text-5xl font-black text-white mb-6">
+            🎯 Ready for Homework Adventures?
           </h2>
-          <p className="text-xl text-brand-100 mb-8">
-            Join thousands of parents who've already transformed their
-            children's learning experience
+          <p className="text-xl text-kids-yellow-light mb-8 font-medium">
+            🌟 Join thousands of families making learning super fun and easy!
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
             <Link to="/homework-helper">
               <Button
                 size="lg"
-                className="bg-white text-brand-500 hover:bg-gray-100 px-8 py-4 text-lg"
+                className="bg-kids-yellow hover:bg-kids-yellow-bright text-kids-purple-dark px-10 py-6 text-xl font-black rounded-2xl shadow-2xl hover:scale-105 transition-all duration-300"
               >
-                Start Your Free Trial <ArrowRight className="ml-2 h-5 w-5" />
+                🚀 Start Free Adventure! <ArrowRight className="ml-3 h-6 w-6" />
               </Button>
             </Link>
-            <div className="flex items-center text-brand-100">
-              <Smartphone className="h-5 w-5 mr-2" />
-              Works on all devices
+            <div className="flex items-center text-kids-yellow-light font-medium">
+              <Smartphone className="h-6 w-6 mr-3" />
+              📱 Works on all devices!
             </div>
           </div>
         </div>
@@ -493,90 +545,108 @@ const Index = () => {
           <div className="grid md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center space-x-2 mb-4">
-                <div className="bg-brand-500 p-2 rounded-lg">
-                  <BookOpen className="h-6 w-6 text-white" />
+                <div className="bg-kids-purple p-2 rounded-xl">
+                  <GraduationCap className="h-6 w-6 text-white" />
                 </div>
-                <span className="text-xl font-bold">StudyBuddy</span>
+                <span className="text-xl font-black">StudyBuddy</span>
               </div>
-              <p className="text-gray-400 leading-relaxed">
-                Empowering parents to help their children succeed in education
-                through AI-powered assistance.
+              <p className="text-gray-400 leading-relaxed font-medium">
+                🌟 Empowering families to make learning an exciting adventure
+                through AI-powered homework assistance!
               </p>
             </div>
             <div>
-              <h3 className="font-semibold mb-4">Product</h3>
+              <h3 className="font-black mb-4 text-kids-yellow">Product</h3>
               <ul className="space-y-2 text-gray-400">
                 <li>
                   <a
                     href="#features"
-                    className="hover:text-white transition-colors"
+                    className="hover:text-kids-yellow transition-colors font-medium"
                   >
-                    Features
+                    ✨ Features
                   </a>
                 </li>
                 <li>
                   <a
                     href="#pricing"
-                    className="hover:text-white transition-colors"
+                    className="hover:text-kids-yellow transition-colors font-medium"
                   >
-                    Pricing
+                    💰 Pricing
                   </a>
                 </li>
                 <li>
                   <Link
                     to="/homework-helper"
-                    className="hover:text-white transition-colors"
+                    className="hover:text-kids-yellow transition-colors font-medium"
                   >
-                    Try Now
+                    🚀 Try Now
                   </Link>
                 </li>
               </ul>
             </div>
             <div>
-              <h3 className="font-semibold mb-4">Support</h3>
+              <h3 className="font-black mb-4 text-kids-yellow">Support</h3>
               <ul className="space-y-2 text-gray-400">
                 <li>
-                  <a href="#" className="hover:text-white transition-colors">
-                    Help Center
+                  <a
+                    href="#"
+                    className="hover:text-kids-yellow transition-colors font-medium"
+                  >
+                    🆘 Help Center
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-white transition-colors">
-                    Contact Us
+                  <a
+                    href="#"
+                    className="hover:text-kids-yellow transition-colors font-medium"
+                  >
+                    📞 Contact Us
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-white transition-colors">
-                    Privacy Policy
+                  <a
+                    href="#"
+                    className="hover:text-kids-yellow transition-colors font-medium"
+                  >
+                    🔒 Privacy Policy
                   </a>
                 </li>
               </ul>
             </div>
             <div>
-              <h3 className="font-semibold mb-4">Connect</h3>
+              <h3 className="font-black mb-4 text-kids-yellow">Connect</h3>
               <ul className="space-y-2 text-gray-400">
                 <li>
-                  <a href="#" className="hover:text-white transition-colors">
-                    WhatsApp Support
+                  <a
+                    href="#"
+                    className="hover:text-kids-yellow transition-colors font-medium"
+                  >
+                    📱 WhatsApp Support
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-white transition-colors">
-                    Email Us
+                  <a
+                    href="#"
+                    className="hover:text-kids-yellow transition-colors font-medium"
+                  >
+                    📧 Email Us
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-white transition-colors">
-                    School Partnerships
+                  <a
+                    href="#"
+                    className="hover:text-kids-yellow transition-colors font-medium"
+                  >
+                    🏫 School Partnerships
                   </a>
                 </li>
               </ul>
             </div>
           </div>
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>
-              &copy; 2024 StudyBuddy. Making homework easier for families across
-              Kenya.
+            <p className="font-medium">
+              &copy; 2024 StudyBuddy. 🌍 Making homework adventures fun for
+              families across Kenya and beyond!
             </p>
           </div>
         </div>

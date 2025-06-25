@@ -18,91 +18,110 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 217 87% 55%;
+    --primary: 267 83% 62%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 220 14% 96%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 49 100% 67%;
+    --secondary-foreground: 222.2 84% 4.9%;
 
-    --muted: 220 14% 96%;
+    --muted: 49 100% 95%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 220 14% 96%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 49 100% 67%;
+    --accent-foreground: 222.2 84% 4.9%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 217 87% 55%;
+    --border: 49 43% 88%;
+    --input: 49 43% 88%;
+    --ring: 267 83% 62%;
 
-    --radius: 0.5rem;
+    --radius: 1rem;
 
-    /* Brand colors for homework helper - education focused */
-    --brand-50: 210 100% 98%;
-    --brand-100: 210 100% 95%;
-    --brand-200: 211 96% 89%;
-    --brand-300: 212 92% 80%;
-    --brand-400: 214 84% 68%;
-    --brand-500: 217 87% 55%;
-    --brand-600: 221 83% 53%;
-    --brand-700: 224 76% 48%;
-    --brand-800: 226 71% 40%;
-    --brand-900: 224 64% 33%;
+    /* Kids-friendly bright colors inspired by the tutoring image */
+    --kids-yellow: 49 100% 67%;
+    --kids-yellow-bright: 45 100% 51%;
+    --kids-yellow-light: 49 100% 95%;
+    --kids-purple: 267 83% 62%;
+    --kids-purple-dark: 267 83% 45%;
+    --kids-purple-light: 267 83% 95%;
+    --kids-orange: 25 95% 53%;
+    --kids-green: 138 76% 45%;
+    --kids-pink: 330 81% 60%;
+    --kids-blue: 217 91% 60%;
 
-    --success: 142 76% 36%;
+    /* Brand colors - bright and playful */
+    --brand-50: 267 100% 98%;
+    --brand-100: 267 100% 95%;
+    --brand-200: 267 96% 87%;
+    --brand-300: 267 89% 74%;
+    --brand-400: 267 83% 62%;
+    --brand-500: 267 83% 45%;
+    --brand-600: 267 83% 38%;
+    --brand-700: 267 76% 32%;
+    --brand-800: 267 71% 27%;
+    --brand-900: 267 64% 22%;
+
+    --success: 138 76% 45%;
     --success-foreground: 0 0% 100%;
 
-    --warning: 38 92% 50%;
+    --warning: 45 100% 51%;
     --warning-foreground: 0 0% 100%;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
+    --background: 267 83% 8%;
     --foreground: 210 40% 98%;
 
-    --card: 222.2 84% 4.9%;
+    --card: 267 83% 10%;
     --card-foreground: 210 40% 98%;
 
-    --popover: 222.2 84% 4.9%;
+    --popover: 267 83% 10%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 217 87% 55%;
+    --primary: 267 83% 62%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 49 100% 67%;
+    --secondary-foreground: 222.2 84% 4.9%;
 
-    --muted: 217.2 32.6% 17.5%;
+    --muted: 267 83% 15%;
     --muted-foreground: 215 20.2% 65.1%;
 
-    --accent: 217.2 32.6% 17.5%;
+    --accent: 267 83% 15%;
     --accent-foreground: 210 40% 98%;
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 217 87% 55%;
+    --border: 267 83% 15%;
+    --input: 267 83% 15%;
+    --ring: 267 83% 62%;
 
-    /* Dark mode brand colors */
-    --brand-50: 224 64% 33%;
-    --brand-100: 226 71% 40%;
-    --brand-200: 224 76% 48%;
-    --brand-300: 221 83% 53%;
-    --brand-400: 217 87% 55%;
-    --brand-500: 214 84% 68%;
-    --brand-600: 212 92% 80%;
-    --brand-700: 211 96% 89%;
-    --brand-800: 210 100% 95%;
-    --brand-900: 210 100% 98%;
+    /* Dark mode bright colors */
+    --kids-yellow: 45 100% 51%;
+    --kids-yellow-bright: 49 100% 67%;
+    --kids-yellow-light: 49 100% 15%;
+    --kids-purple: 267 83% 62%;
+    --kids-purple-dark: 267 83% 45%;
+    --kids-purple-light: 267 83% 15%;
 
-    --success: 142 76% 36%;
+    --brand-50: 267 64% 22%;
+    --brand-100: 267 71% 27%;
+    --brand-200: 267 76% 32%;
+    --brand-300: 267 83% 38%;
+    --brand-400: 267 83% 45%;
+    --brand-500: 267 83% 62%;
+    --brand-600: 267 89% 74%;
+    --brand-700: 267 96% 87%;
+    --brand-800: 267 100% 95%;
+    --brand-900: 267 100% 98%;
+
+    --success: 138 76% 45%;
     --success-foreground: 0 0% 100%;
 
-    --warning: 38 92% 50%;
+    --warning: 45 100% 51%;
     --warning-foreground: 0 0% 100%;
   }
 }
@@ -119,14 +138,68 @@
 
 @layer components {
   .gradient-text {
-    @apply bg-gradient-to-r from-brand-600 to-brand-800 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-brand-500 to-kids-purple bg-clip-text text-transparent;
   }
 
-  .gradient-bg {
-    @apply bg-gradient-to-br from-brand-50 via-white to-brand-100;
+  .kids-gradient-bg {
+    @apply bg-gradient-to-br from-kids-yellow-light via-white to-kids-purple-light;
   }
 
-  .dark .gradient-bg {
+  .kids-gradient-purple {
+    @apply bg-gradient-to-br from-kids-purple via-brand-500 to-kids-purple-dark;
+  }
+
+  .kids-gradient-yellow {
+    @apply bg-gradient-to-br from-kids-yellow-bright via-kids-yellow to-kids-orange;
+  }
+
+  .dark .kids-gradient-bg {
     @apply bg-gradient-to-br from-background via-card to-muted;
   }
+
+  .fun-shadow {
+    box-shadow:
+      0 10px 25px -5px rgba(139, 92, 246, 0.3),
+      0 10px 10px -5px rgba(139, 92, 246, 0.1);
+  }
+
+  .bright-button {
+    @apply bg-gradient-to-r from-kids-yellow-bright to-kids-orange hover:from-kids-orange hover:to-kids-yellow-bright transform hover:scale-105 transition-all duration-200 font-bold text-white shadow-lg;
+  }
+
+  .purple-button {
+    @apply bg-gradient-to-r from-kids-purple to-brand-500 hover:from-brand-500 hover:to-kids-purple transform hover:scale-105 transition-all duration-200 font-bold text-white shadow-lg;
+  }
+}
+
+/* Fun animations for kids */
+@keyframes bounce-gentle {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes wiggle {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(1deg);
+  }
+  75% {
+    transform: rotate(-1deg);
+  }
+}
+
+.animate-bounce-gentle {
+  animation: bounce-gentle 2s infinite;
+}
+
+.animate-wiggle {
+  animation: wiggle 0.5s ease-in-out;
 }
