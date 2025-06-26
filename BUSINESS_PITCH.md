@@ -73,7 +73,7 @@
 
 #### 1. Pay-Per-Use (B2C)
 
-- **R5-10 per question** depending on complexity
+- **R50-100 per question** depending on complexity
 - **Target**: Occasional users, trial customers
 - **Projected Revenue**: R180/month per active user
 
