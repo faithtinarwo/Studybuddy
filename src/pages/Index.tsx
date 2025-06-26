@@ -104,7 +104,7 @@ const Index = () => {
   const pricingPlans = [
     {
       name: "Try It Out",
-      price: "R 5-10",
+      price: "R 50-100",
       description: "per question",
       features: [
         "Instant AI responses",
