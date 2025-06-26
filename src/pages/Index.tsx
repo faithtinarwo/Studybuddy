@@ -39,41 +39,41 @@ const Index = () => {
       title: "Snap & Learn",
       description:
         "Just take a photo of homework and get instant, fun explanations!",
-      color: "kids-orange",
+      color: "bg-orange-500",
     },
     {
       icon: Bot,
       title: "AI Study Buddy",
       description:
         "Chat with our friendly AI tutor who makes learning fun and easy",
-      color: "kids-purple",
+      color: "bg-purple-500",
     },
     {
       icon: BookOpen,
       title: "All Subjects",
       description:
         "Math, Science, English, Social Studies - we've got it all covered!",
-      color: "kids-green",
+      color: "bg-green-500",
     },
     {
       icon: Clock,
       title: "24/7 Helper",
       description:
         "Get help anytime - morning, noon, or night homework sessions",
-      color: "kids-blue",
+      color: "bg-blue-500",
     },
     {
       icon: Users,
       title: "Family Friendly",
       description:
         "Made especially for busy parents helping their awesome kids",
-      color: "kids-pink",
+      color: "bg-pink-500",
     },
     {
       icon: Award,
       title: "Learn & Grow",
       description: "Not just answers - we help children understand and learn!",
-      color: "kids-yellow-bright",
+      color: "bg-yellow-400",
     },
   ];
 
@@ -104,7 +104,7 @@ const Index = () => {
   const pricingPlans = [
     {
       name: "Try It Out",
-      price: "R 5-10",
+      price: "R 50-100",
       description: "per question",
       features: [
         "Instant AI responses",
@@ -317,7 +317,7 @@ const Index = () => {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {features.map((feature, index) => (
+            {features.map(({ icon: Icon, title, description, color }, index) => (
               <Card
                 key={index}
                 className="p-6 hover:shadow-2xl transition-all duration-300 animate-slide-up border-0 fun-shadow hover:scale-105 rounded-2xl"
@@ -325,21 +325,22 @@ const Index = () => {
               >
                 <CardHeader className="pb-4">
                   <div
-                    className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-4 bg-${feature.color} shadow-lg`}
+                    className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-4 ${color} shadow-lg`}
                   >
-                    <feature.icon className="h-8 w-8 text-white" />
+                    <Icon className="h-8 w-8 text-white" /> {/* ✅ Correct usage */}
                   </div>
                   <CardTitle className="text-2xl font-bold">
-                    {feature.title}
+                    {title}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-gray-600 leading-relaxed text-lg">
-                    {feature.description}
+                    {description}
                   </CardDescription>
                 </CardContent>
               </Card>
             ))}
+
           </div>
         </div>
       </section>
