@@ -16,6 +16,11 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import {
   BookOpen,
   Camera,
   Send,
@@ -38,9 +43,22 @@ import {
   Target,
   ShoppingCart,
   Gift,
+  ChevronDown,
+  Flame,
+  Award,
+  TrendingUp,
+  Volume2,
+  VolumeX,
 } from "lucide-react";
 import { apiClient, detectSubject } from "@/lib/api";
 import { toast } from "@/hooks/use-toast";
+import { Confetti } from "@/components/ui/confetti";
+import {
+  AchievementSystem,
+  AchievementNotification,
+  Achievement,
+  UserStats,
+} from "@/components/ui/achievement-system";
 
 interface Message {
   id: string;
@@ -48,6 +66,8 @@ interface Message {
   content: string;
   timestamp: Date;
   image?: string;
+  xpEarned?: number;
+  subject?: string;
 }
 
 interface CreditPackage {
@@ -78,6 +98,23 @@ const HomeworkHelper = () => {
   const [user, setUser] = useState<any>(null);
   const [creditPackages, setCreditPackages] = useState<CreditPackage[]>([]);
   const [showCreditDialog, setShowCreditDialog] = useState(false);
+  const [showAchievements, setShowAchievements] = useState(false);
+  const [soundEnabled, setSoundEnabled] = useState(true);
+
+  // Gamification states
+  const [showConfetti, setShowConfetti] = useState(false);
+  const [unlockedAchievement, setUnlockedAchievement] =
+    useState<Achievement | null>(null);
+  const [userStats, setUserStats] = useState<UserStats>({
+    totalQuestions: 0,
+    currentStreak: 1,
+    longestStreak: 1,
+    subjectsExplored: 0,
+    perfectDays: 0,
+    level: 1,
+    xp: 0,
+  });
+
   const fileInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
@@ -85,6 +122,7 @@ const HomeworkHelper = () => {
   useEffect(() => {
     loadUserData();
     loadCreditPackages();
+    loadUserStats();
   }, []);
 
   const loadUserData = async () => {
@@ -148,6 +186,64 @@ const HomeworkHelper = () => {
     }
   };
 
+  const loadUserStats = () => {
+    // Load from localStorage for demo
+    const savedStats = localStorage.getItem("studybuddy_stats");
+    if (savedStats) {
+      setUserStats(JSON.parse(savedStats));
+    }
+  };
+
+  const updateUserStats = (updates: Partial<UserStats>) => {
+    const newStats = { ...userStats, ...updates };
+    setUserStats(newStats);
+    localStorage.setItem("studybuddy_stats", JSON.stringify(newStats));
+  };
+
+  const playSound = (type: "success" | "achievement" | "level_up") => {
+    if (!soundEnabled) return;
+
+    // Create different pitched beeps for different events
+    const audioContext = new (window.AudioContext ||
+      (window as any).webkitAudioContext)();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+
+    const frequencies = {
+      success: [523.25, 659.25, 783.99], // C, E, G
+      achievement: [523.25, 659.25, 783.99, 1046.5], // C, E, G, C
+      level_up: [392, 523.25, 659.25, 783.99, 1046.5], // G, C, E, G, C
+    };
+
+    const sequence = frequencies[type];
+    let noteIndex = 0;
+
+    const playNote = () => {
+      if (noteIndex < sequence.length) {
+        oscillator.frequency.setValueAtTime(
+          sequence[noteIndex],
+          audioContext.currentTime,
+        );
+        gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(
+          0.01,
+          audioContext.currentTime + 0.2,
+        );
+
+        noteIndex++;
+        setTimeout(playNote, 150);
+      } else {
+        oscillator.stop();
+      }
+    };
+
+    oscillator.start();
+    playNote();
+  };
+
   const handleSendMessage = async () => {
     if (!inputMessage.trim() && !uploadedImage) return;
 
@@ -157,6 +253,7 @@ const HomeworkHelper = () => {
       content: inputMessage || "I uploaded an image with my homework question.",
       timestamp: new Date(),
       image: uploadedImagePreview || undefined,
+      subject: detectSubject(inputMessage),
     };
 
     setMessages((prev) => [...prev, userMessage]);
@@ -171,10 +268,8 @@ const HomeworkHelper = () => {
       let response;
 
       if (currentImage) {
-        // Send image to backend
         response = await apiClient.sendImage(currentImage, currentMessage);
       } else {
-        // Send text message to backend
         const subject = detectSubject(currentMessage);
         response = await apiClient.sendMessage({
           message: currentMessage,
@@ -182,20 +277,56 @@ const HomeworkHelper = () => {
         });
       }
 
+      const xpEarned = Math.floor(Math.random() * 20) + 10; // 10-30 XP per question
+
       const aiMessage: Message = {
         id: (Date.now() + 1).toString(),
         type: "ai",
         content: response.message,
         timestamp: new Date(),
+        xpEarned,
+        subject: userMessage.subject,
       };
 
       setMessages((prev) => [...prev, aiMessage]);
       setCredits(response.credits_remaining);
 
-      // Show success toast
+      // Update stats
+      const newTotalQuestions = userStats.totalQuestions + 1;
+      const newXP = userStats.xp + xpEarned;
+      const newLevel = Math.floor(newXP / 100) + 1;
+      const leveledUp = newLevel > userStats.level;
+
+      // Track subjects explored
+      const subjectsSet = new Set(
+        messages
+          .filter((m) => m.subject)
+          .map((m) => m.subject)
+          .concat(userMessage.subject ? [userMessage.subject] : []),
+      );
+
+      updateUserStats({
+        totalQuestions: newTotalQuestions,
+        xp: newXP,
+        level: newLevel,
+        subjectsExplored: subjectsSet.size,
+      });
+
+      // Play appropriate sound
+      if (leveledUp) {
+        playSound("level_up");
+        setShowConfetti(true);
+        toast({
+          title: "🎉 Level Up!",
+          description: `Congratulations! You've reached Level ${newLevel}!`,
+        });
+      } else {
+        playSound("success");
+      }
+
       toast({
-        title: "✨ StudyBuddy responded!",
-        description: `${response.credits_remaining} credits remaining`,
+        title: "StudyBuddy responded!",
+        description: `+${xpEarned} XP earned! ${response.credits_remaining} credits remaining`,
       });
     } catch (error: any) {
       console.error("Failed to send message:", error);
@@ -205,22 +336,44 @@ const HomeworkHelper = () => {
         currentMessage,
         currentImage,
       );
+      const xpEarned = Math.floor(Math.random() * 20) + 10;
+
       const aiMessage: Message = {
         id: (Date.now() + 1).toString(),
         type: "ai",
         content: simulatedResponse,
         timestamp: new Date(),
+        xpEarned,
+        subject: userMessage.subject,
       };
 
       setMessages((prev) => [...prev, aiMessage]);
 
-      // Simulate credit deduction
+      // Simulate credit deduction and XP gain
       const newCredits = Math.max(0, credits - 1);
       setCredits(newCredits);
 
+      const newTotalQuestions = userStats.totalQuestions + 1;
+      const newXP = userStats.xp + xpEarned;
+      const newLevel = Math.floor(newXP / 100) + 1;
+      const leveledUp = newLevel > userStats.level;
+
+      updateUserStats({
+        totalQuestions: newTotalQuestions,
+        xp: newXP,
+        level: newLevel,
+      });
+
+      if (leveledUp) {
+        playSound("level_up");
+        setShowConfetti(true);
+      } else {
+        playSound("success");
+      }
+
       toast({
-        title: "✨ StudyBuddy responded!",
-        description: `${newCredits} credits remaining`,
+        title: "StudyBuddy responded!",
+        description: `+${xpEarned} XP earned! ${newCredits} credits remaining`,
       });
     } finally {
       setIsLoading(false);
@@ -252,7 +405,7 @@ From your image, I can see this is a ${subject || "homework"} question that need
 
 👨‍👩‍👧‍👦 **Parent Tip**: Encourage your child to explain each step back to you - this helps them really understand the concept!
 
-🌟 **Remember**: It's okay to make mistakes - that's how we learn and grow! You're doing great!
+🌟 **Remember**: It's okay to make mistakes - that's how we learn and grow! You're doing great! 
 
 Need me to explain any part in more detail? I'm here to help! 💪✨`;
     }
@@ -330,7 +483,7 @@ What part of English would you like to work on? Let's create something amazing t
 💡 **Let's Figure This Out Together:**
 
 🎯 **Step 1**: Let's understand exactly what you're asking
-🔍 **Step 2**: Break down the problem into smaller pieces
+🔍 **Step 2**: Break down the problem into smaller pieces  
 💪 **Step 3**: Work through each piece together
 ✨ **Step 4**: Put it all together for the final answer!
 
@@ -338,7 +491,7 @@ What part of English would you like to work on? Let's create something amazing t
 
 🚀 **Fun Learning Fact**: Your brain grows stronger every time you learn something new - you're literally becoming smarter right now!
 
-What subject is this question about? I can give you more specific help once I know if it's math, science, English, or something else!
+What subject is this question about? I can give you more specific help once I know if it's math, science, English, or something else! 
 
 Keep up the amazing work! 🌟💝`;
     }
@@ -399,6 +552,12 @@ Keep up the amazing work! 🌟💝`;
     );
   };
 
+  const handleAchievementUnlocked = (achievement: Achievement) => {
+    setUnlockedAchievement(achievement);
+    playSound("achievement");
+    setShowConfetti(true);
+  };
+
   if (!user) {
     return (
       <div className="min-h-screen kids-gradient-bg flex items-center justify-center">
@@ -412,8 +571,15 @@ Keep up the amazing work! 🌟💝`;
 
   return (
     <div className="min-h-screen kids-gradient-bg">
+      {/* Confetti and Achievement Notifications */}
+      <Confetti show={showConfetti} onComplete={() => setShowConfetti(false)} />
+      <AchievementNotification
+        achievement={unlockedAchievement}
+        onClose={() => setUnlockedAchievement(null)}
+      />
+
       {/* Header */}
-      <header className="border-b bg-white/90 backdrop-blur-md sticky top-0 z-50 border-kids-yellow/30">
+      <header className="border-b bg-white/90 backdrop-blur-md sticky top-0 z-40 border-kids-yellow/30">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-4">
@@ -437,6 +603,17 @@ Keep up the amazing work! 🌟💝`;
             </div>
 
             <div className="flex items-center space-x-4">
+              {/* Level and XP Display */}
+              <div className="hidden sm:flex items-center space-x-2">
+                <Badge className="bg-gradient-to-r from-kids-purple to-kids-blue text-white font-bold">
+                  <Sparkles className="w-3 h-3 mr-1" />
+                  Level {userStats.level}
+                </Badge>
+                <Badge className="bg-kids-yellow text-kids-purple-dark font-bold">
+                  {userStats.xp} XP
+                </Badge>
+              </div>
+
               <Badge
                 variant="outline"
                 className={`border-2 font-bold px-3 py-1 ${
@@ -446,15 +623,39 @@ Keep up the amazing work! 🌟💝`;
                 }`}
               >
                 <Zap className="w-4 h-4 mr-2" />
-                {credits} credits left
+                {credits} credits
               </Badge>
+
+              {/* Sound Toggle */}
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setSoundEnabled(!soundEnabled)}
+                className="hidden sm:flex"
+              >
+                {soundEnabled ? (
+                  <Volume2 className="h-4 w-4" />
+                ) : (
+                  <VolumeX className="h-4 w-4" />
+                )}
+              </Button>
+
+              {/* Achievements Button */}
+              <Button
+                variant="outline"
+                onClick={() => setShowAchievements(!showAchievements)}
+                className="hidden sm:flex"
+              >
+                <Trophy className="w-4 h-4 mr-2" />
+                Achievements
+              </Button>
 
               <Dialog
                 open={showCreditDialog}
                 onOpenChange={setShowCreditDialog}
               >
                 <DialogTrigger asChild>
-                  <Button className="hidden sm:flex bright-button">
+                  <Button className="bright-button">
                     <CreditCard className="w-4 h-4 mr-2" />
                     Buy Credits
                   </Button>
@@ -463,7 +664,7 @@ Keep up the amazing work! 🌟💝`;
                   <DialogHeader>
                     <DialogTitle className="flex items-center text-kids-purple font-black">
                       <ShoppingCart className="w-5 h-5 mr-2" />
-                      🛒 Buy Learning Credits
+                      Buy Learning Credits
                     </DialogTitle>
                     <DialogDescription>
                       Choose the perfect credit package for your learning
@@ -489,7 +690,8 @@ Keep up the amazing work! 🌟💝`;
                                 </span>
                                 {pkg.bonus && (
                                   <Badge className="bg-kids-orange text-white">
-                                    🎁 BONUS
+                                    <Gift className="w-3 h-3 mr-1" />
+                                    BONUS
                                   </Badge>
                                 )}
                               </div>
@@ -531,6 +733,38 @@ Keep up the amazing work! 🌟💝`;
         <div className="grid lg:grid-cols-4 gap-6 h-[calc(100vh-8rem)]">
           {/* Sidebar */}
           <div className="lg:col-span-1 space-y-4">
+            {/* Achievement System - Collapsible */}
+            <Collapsible
+              open={showAchievements}
+              onOpenChange={setShowAchievements}
+            >
+              <CollapsibleTrigger asChild>
+                <Card className="rounded-2xl border-2 border-kids-yellow/50 shadow-xl cursor-pointer hover:shadow-2xl transition-all">
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-lg flex items-center justify-between font-black text-kids-purple">
+                      <div className="flex items-center">
+                        <Trophy className="w-5 h-5 mr-2 text-kids-yellow-bright" />
+                        Achievements
+                      </div>
+                      <ChevronDown
+                        className={`w-4 h-4 transition-transform ${showAchievements ? "rotate-180" : ""}`}
+                      />
+                    </CardTitle>
+                  </CardHeader>
+                </Card>
+              </CollapsibleTrigger>
+              <CollapsibleContent>
+                <Card className="rounded-2xl border-2 border-kids-yellow/30 shadow-xl">
+                  <CardContent className="p-4">
+                    <AchievementSystem
+                      stats={userStats}
+                      onAchievementUnlocked={handleAchievementUnlocked}
+                    />
+                  </CardContent>
+                </Card>
+              </CollapsibleContent>
+            </Collapsible>
+
             <Card className="rounded-2xl border-2 border-kids-yellow/30 shadow-xl">
               <CardHeader className="pb-3">
                 <CardTitle className="text-lg flex items-center font-black text-kids-purple">
@@ -620,7 +854,8 @@ Keep up the amazing work! 🌟💝`;
                       className="w-full bright-button font-bold"
                       onClick={() => setShowCreditDialog(true)}
                     >
-                      🛒 Buy Credits
+                      <ShoppingCart className="w-4 h-4 mr-2" />
+                      Buy Credits
                     </Button>
                   </div>
                 </CardContent>
@@ -690,6 +925,14 @@ Keep up the amazing work! 🌟💝`;
                           <p className="text-sm leading-relaxed whitespace-pre-wrap font-medium">
                             {message.content}
                           </p>
+                          {message.xpEarned && (
+                            <div className="mt-2 flex items-center justify-end">
+                              <Badge className="bg-kids-yellow text-kids-purple-dark font-bold">
+                                <Sparkles className="w-3 h-3 mr-1" />+
+                                {message.xpEarned} XP
+                              </Badge>
+                            </div>
+                          )}
                           <div
                             className={`text-xs mt-3 opacity-70 font-medium ${
                               message.type === "user"
@@ -697,7 +940,7 @@ Keep up the amazing work! 🌟💝`;
                                 : "text-gray-500"
                             }`}
                           >
-                            ⏰ {formatTime(message.timestamp)}
+                            {formatTime(message.timestamp)}
                           </div>
                         </div>
                       </div>
@@ -723,7 +966,7 @@ Keep up the amazing work! 🌟💝`;
                             ></div>
                           </div>
                           <p className="text-xs text-gray-500 mt-2 font-medium">
-                            🤖 Thinking hard...
+                            Thinking hard...
                           </p>
                         </div>
                       </div>
