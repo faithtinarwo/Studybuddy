@@ -65,41 +65,17 @@ StudyBuddy is a production-ready educational technology platform that provides i
 
 ### Backend Power
 
-- **Python FastAPI** for high-performance REST APIs
-- **PostgreSQL** for reliable data storage
-- **Redis** for caching and session management
-- **OpenAI Integration** for advanced AI capabilities
+- **Supabase** for authentication, database, and real-time features
+- **PostgreSQL** for reliable, scalable data storage
+- **Row Level Security** for data protection and privacy
+- **Real-time subscriptions** for live updates
 
-### Production Infrastructure
+### AI Integration
 
-- **Docker** containerization for consistent deployments
-- **Kubernetes** orchestration for scalability
-- **AWS/Google Cloud** for global availability
-- **CDN** for fast asset delivery worldwide
-
-## 📈 **Market Opportunity**
-
-- **R89 billion** South African education market
-- **4.2 million** target middle-income households
-- **67% smartphone** penetration and growing
-- **Post-COVID** acceleration in EdTech adoption
-- **15% annual growth** in private tutoring segment
-
-## 🎯 **Perfect For**
-
-### Families
-
-- Parents who want to help but feel unprepared
-- Working parents with limited time for homework help
-- Families seeking affordable tutoring alternatives
-- Children who need extra support outside school hours
-
-### Schools
-
-- Teachers looking for supplementary learning tools
-- Schools wanting to extend learning beyond classroom
-- Educational institutions serving diverse communities
-- Homeschooling families needing curriculum support
+- **OpenAI GPT-4** for advanced homework assistance
+- **Subject-specific prompts** for specialized tutoring
+- **Fallback responses** for reliability
+- **South African context** awareness
 
 ## 🚀 **Getting Started**
 
@@ -112,36 +88,71 @@ StudyBuddy is a production-ready educational technology platform that provides i
 
 ### For Developers
 
+#### Quick Setup
+
 ```bash
 # Clone the repository
 git clone https://github.com/studybuddy/studybuddy-platform.git
 cd studybuddy-platform
 
-# Install frontend dependencies
+# Install dependencies
 npm install
-
-# Install backend dependencies
-cd backend
-pip install -r requirements.txt
 
 # Set up environment variables
 cp .env.example .env
-# Edit .env with your OpenAI API key and database credentials
-
-# Start the development servers
-npm run dev          # Frontend (React)
-python run.py        # Backend (FastAPI)
+# Edit .env with your Supabase and OpenAI credentials
 ```
 
-### Environment Setup
+#### Supabase Backend Setup
 
-```bash
-# Required environment variables
-OPENAI_API_KEY=your_openai_api_key_here
-DATABASE_URL=postgresql://user:password@localhost/studybuddy
-REDIS_URL=redis://localhost:6379
-SECRET_KEY=your_jwt_secret_key_here
-```
+StudyBuddy uses Supabase as its backend-as-a-service. Follow these steps:
+
+1. **Create a Supabase Project**
+
+   - Sign up at [supabase.com](https://supabase.com)
+   - Create a new project
+   - Note your project URL and anon key
+
+2. **Set Up Database Schema**
+
+   - Open the SQL Editor in your Supabase dashboard
+   - Run the migration script: `supabase/migrations/001_initial_schema.sql`
+   - This creates all necessary tables, functions, and security policies
+
+3. **Configure Environment Variables**
+
+   ```env
+   VITE_SUPABASE_URL=https://your-project.supabase.co
+   VITE_SUPABASE_ANON_KEY=your-supabase-anon-key
+   VITE_OPENAI_API_KEY=sk-your-openai-api-key  # Optional for real AI
+   ```
+
+4. **Start Development Server**
+   ```bash
+   npm run dev
+   ```
+
+#### Full Setup Guide
+
+For detailed setup instructions, see **[SUPABASE_SETUP.md](./SUPABASE_SETUP.md)**
+
+### Database Schema
+
+StudyBuddy uses a clean, efficient database schema:
+
+- **`users`** - User profiles with gamification stats
+- **`chat_messages`** - Homework conversations and AI responses
+- **`achievements`** - Unlocked badges and milestones
+- **`credit_transactions`** - Payment and usage history
+
+### API Integration
+
+The app includes a comprehensive API client (`src/lib/api.ts`) that handles:
+
+- **Authentication** - Supabase Auth integration
+- **Chat Management** - Real-time homework assistance
+- **Gamification** - XP, levels, and achievements
+- **Credit System** - Payment and usage tracking
 
 ## 📊 **Performance & Metrics**
 
@@ -150,7 +161,7 @@ SECRET_KEY=your_jwt_secret_key_here
 - **<1.2s** First Contentful Paint
 - **<2.5s** Largest Contentful Paint
 - **95/100** Core Web Vitals Score
-- **<150ms** Average API response time
+- **Real-time updates** via Supabase subscriptions
 
 ### Business Metrics
 
@@ -177,10 +188,10 @@ SECRET_KEY=your_jwt_secret_key_here
 
 ### Technology Partners
 
+- **Supabase** - Backend-as-a-service platform
 - **OpenAI** - Advanced AI capabilities
-- **Microsoft Azure** - Cloud infrastructure
+- **Vercel** - Frontend deployment and hosting
 - **PayFast** - Secure payment processing
-- **Vodacom** - Mobile connectivity solutions
 
 ## 🌍 **Social Impact**
 
@@ -221,15 +232,15 @@ SECRET_KEY=your_jwt_secret_key_here
 
 ## 📄 **Documentation**
 
+- **[Supabase Setup Guide](./SUPABASE_SETUP.md)** - Complete backend setup instructions
 - **[Business Pitch Deck](./BUSINESS_PITCH.md)** - Comprehensive market analysis and investment opportunity
 - **[Technical Performance](./TECHNICAL_PERFORMANCE.md)** - Architecture, optimization, and scalability details
-- **[API Documentation](http://localhost:8000/docs)** - Interactive API reference and testing
 - **[User Guide](./docs/USER_GUIDE.md)** - Complete guide for families and educators
 
 ## 🔒 **Security & Privacy**
 
 - **POPIA Compliant** - Full South African data protection compliance
-- **SOC 2 Type II** - Enterprise-grade security standards
+- **Row Level Security** - Database-level access controls
 - **End-to-end Encryption** - All user data protected in transit and at rest
 - **Child Safety First** - AI responses filtered for age-appropriate content
 - **No Personal Data Sharing** - Student information never shared with third parties
@@ -238,31 +249,31 @@ SECRET_KEY=your_jwt_secret_key_here
 
 ### Q1 2024 ✅
 
-- Web platform launch
-- AI homework assistance
-- Payment integration
-- User authentication
+- ✅ Web platform launch
+- ✅ Supabase backend integration
+- ✅ AI homework assistance
+- ✅ User authentication & gamification
 
 ### Q2 2024 🔄
 
-- Mobile apps (iOS/Android)
-- Voice input/output
-- Advanced subject specialization
-- Parent dashboard
+- 📱 Mobile apps (iOS/Android)
+- 🎤 Voice input/output
+- 🎯 Advanced subject specialization
+- 📊 Parent dashboard & analytics
 
 ### Q3 2024 📋
 
-- Live tutor integration
-- Afrikaans language support
-- School administrator portal
-- Advanced analytics
+- 👨‍🏫 Live tutor integration
+- 🌍 Afrikaans language support
+- 🏫 School administrator portal
+- 📈 Advanced analytics & insights
 
 ### Q4 2024 📋
 
-- API marketplace
-- White-label solutions
-- isiZulu language support
-- International expansion
+- 🔌 API marketplace
+- 🏷️ White-label solutions
+- 🗣️ isiZulu language support
+- 🌍 International expansion
 
 ## 🤝 **Contributing**
 
@@ -274,7 +285,13 @@ We welcome contributions from the community! Whether you're a developer, educato
 - **🌍 Translate Content** - Support multiple South African languages
 - **🧪 Beta Testing** - Try new features before public release
 
-See our [Contributing Guide](./CONTRIBUTING.md) for detailed instructions.
+### Development Setup
+
+1. **Fork the repository** and clone your fork
+2. **Follow the setup guide** in [SUPABASE_SETUP.md](./SUPABASE_SETUP.md)
+3. **Create a feature branch** for your changes
+4. **Test thoroughly** and ensure all tests pass
+5. **Submit a pull request** with a clear description
 
 ## 📜 **License**
 
