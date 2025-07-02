@@ -117,7 +117,7 @@ const Index = () => {
     },
     {
       name: "Family Fun Pack",
-      price: "R 50",
+      price: "R 200",
       description: "per month",
       features: [
         "Unlimited questions",
